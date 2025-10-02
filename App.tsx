@@ -21,6 +21,7 @@ function AppContent() {
         style={styles.webview}
         source={{ uri: WEBVIEW_URL }}
         onNavigationStateChange={handleNavigationStateChange}
+        allowsBackForwardNavigationGestures={true}
       />
     </View>
   );
