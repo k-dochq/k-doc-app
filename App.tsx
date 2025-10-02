@@ -1,20 +1,36 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { WebView } from "react-native-webview";
+import Constants from "expo-constants";
+import { StyleSheet, View } from "react-native";
+import { WEBVIEW_URL } from "./constants/urls";
+import {
+  SafeAreaProvider,
+  useSafeAreaInsets,
+} from "react-native-safe-area-context";
+
+function AppContent() {
+  const insets = useSafeAreaInsets();
+
+  return (
+    <View style={[styles.container, { paddingBottom: insets.bottom }]}>
+      <WebView style={styles.webview} source={{ uri: WEBVIEW_URL }} />
+    </View>
+  );
+}
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <SafeAreaProvider>
+      <AppContent />
+    </SafeAreaProvider>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    marginTop: Constants.statusBarHeight,
+  },
+  webview: {
+    flex: 1,
   },
 });
