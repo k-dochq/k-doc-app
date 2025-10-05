@@ -4,13 +4,21 @@
   "main": "index.ts",
   "scripts": {
     "start": "expo start",
-    "android": "expo start --android",
-    "ios": "expo start --ios",
-    "web": "expo start --web"
+    "android": "expo run:android",
+    "ios": "expo run:ios",
+    "web": "expo start --web",
+    "clean": "rm -rf android ios",
+    "prebuild": "expo prebuild",
+    "prebuild:android": "expo prebuild --platform android",
+    "prebuild:ios": "expo prebuild --platform ios",
+    "rebuild:android": "rm -rf android && npm run prebuild:android && npm run android",
+    "rebuild:ios": "rm -rf ios && npm run prebuild:ios && npm run ios"
   },
   "dependencies": {
     "expo": "~54.0.10",
     "expo-constants": "^18.0.9",
+    "expo-dev-client": "~6.0.13",
+    "expo-splash-screen": "~31.0.10",
     "expo-status-bar": "~3.0.8",
     "react": "19.1.0",
     "react-native": "0.81.4",

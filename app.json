@@ -1,30 +1,60 @@
 {
   "expo": {
-    "name": "k-doc-app",
+    "name": "K-DOC",
     "slug": "k-doc-app",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/app-icon.png",
     "userInterfaceStyle": "light",
     "newArchEnabled": true,
     "splash": {
-      "image": "./assets/splash-icon.png",
-      "resizeMode": "contain",
+      "image": "./assets/splash.png",
+      "resizeMode": "cover",
       "backgroundColor": "#ffffff"
     },
+    "assetBundlePatterns": ["**/*"],
+    "plugins": [
+      [
+        "expo-splash-screen",
+        {
+          "backgroundColor": "#FFDBF9",
+          "image": "./assets/splash.png",
+          "android": {
+            "image": "./assets/splash.png",
+            "resizeMode": "contain"
+          },
+          "ios": {
+            "image": "./assets/splash.png",
+            "resizeMode": "cover"
+          }
+        }
+      ]
+    ],
     "ios": {
-      "supportsTablet": true
+      "bundleIdentifier": "io.drmiracle.app",
+      "buildNumber": "1.0.0",
+      "supportsTablet": true,
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      }
     },
     "android": {
+      "package": "io.drmiracle.app",
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
+        "foregroundImage": "./assets/app-icon.png",
+        "backgroundColor": "#ffffff",
+        "iconShape": "square"
       },
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "e8d1a981-a5cf-46d7-a157-c3dc719f12bc"
+      }
     }
   }
 }
