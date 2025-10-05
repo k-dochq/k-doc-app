@@ -21,6 +21,10 @@
       "autoIncrement": true,
       "ios": {
         "distribution": "store"
+      },
+      "android": {
+        "buildType": "apk",
+        "gradleCommand": ":app:assembleRelease"
       }
     }
   },
