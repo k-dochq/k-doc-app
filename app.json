@@ -34,7 +34,7 @@
     ],
     "ios": {
       "bundleIdentifier": "io.drmiracle.app",
-      "buildNumber": 15,
+      "buildNumber": "1.5.0",
       "version": "1.5.0",
       "supportsTablet": true,
       "infoPlist": {
