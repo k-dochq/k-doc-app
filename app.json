@@ -30,7 +30,8 @@
         }
       ],
       "./plugins/withKeystoreConfig",
-      "./plugins/withIOSVersion"
+      "./plugins/withIOSVersion",
+      "./plugins/withAndroidCleartextTraffic"
     ],
     "ios": {
       "bundleIdentifier": "io.drmiracle.app",

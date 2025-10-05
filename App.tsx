@@ -1,13 +1,13 @@
 import { WebView } from "react-native-webview";
 import Constants from "expo-constants";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, View, ImageBackground } from "react-native";
 import { WEBVIEW_URL } from "./constants/urls";
 import {
   SafeAreaProvider,
   useSafeAreaInsets,
 } from "react-native-safe-area-context";
 import { useWebViewBackHandler } from "./shared/hooks";
-import { useSplashScreen, SplashScreen } from "./features/splash";
+import { useSplashScreen } from "./features/splash/useSplashScreen";
 
 function AppContent() {
   const insets = useSafeAreaInsets();
@@ -19,7 +19,11 @@ function AppContent() {
   return (
     <View style={[styles.container, { paddingBottom: insets.bottom }]}>
       {showFakeSplash ? (
-        <SplashScreen source={require("./assets/splash.png")} />
+        <ImageBackground
+          source={require("./assets/splash.png")}
+          style={styles.splashBackground}
+          resizeMode="cover"
+        />
       ) : (
         <WebView
           ref={webViewRef}
@@ -53,5 +57,10 @@ const styles = StyleSheet.create({
   },
   webview: {
     flex: 1,
+  },
+  splashBackground: {
+    flex: 1,
+    width: "100%",
+    height: "100%",
   },
 });

@@ -1,15 +1,17 @@
 import { useState, useEffect } from "react";
 import * as SplashScreen from "expo-splash-screen";
 
-// 네이티브 스플래시 스크린 설정
+// Keep the splash screen visible while we fetch resources
 SplashScreen.preventAutoHideAsync();
+
+// Set the animation options
 SplashScreen.setOptions({
   duration: 1000,
   fade: true,
 });
 
 export function useSplashScreen() {
-  const [showFakeSplash, setShowFakeSplash] = useState(true);
+  const [showFakeSplash, setShowFakeSplash] = useState(false);
 
   useEffect(() => {
     // RN 뷰가 뜨면 네이티브 스플래시 즉시 숨김
