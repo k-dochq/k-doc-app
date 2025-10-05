@@ -5,14 +5,14 @@
   "scripts": {
     "start": "expo start",
     "android": "expo run:android",
-    "ios": "expo run:ios",
+    "ios": "expo run:ios --device \"iPhone\"",
     "web": "expo start --web",
     "clean": "rm -rf android ios",
     "prebuild": "expo prebuild",
     "prebuild:android": "expo prebuild --platform android",
     "prebuild:ios": "expo prebuild --platform ios",
     "rebuild:android": "rm -rf android && npm run prebuild:android && npm run android",
-    "rebuild:ios": "rm -rf ios && npm run prebuild:ios && npm run ios"
+    "rebuild:ios": "npm run prebuild:ios && npm run ios"
   },
   "dependencies": {
     "expo": "~54.0.10",
