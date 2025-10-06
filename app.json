@@ -31,13 +31,15 @@
       ],
       "./plugins/withKeystoreConfig",
       "./plugins/withIOSVersion",
-      "./plugins/withAndroidCleartextTraffic"
+      "./plugins/withAndroidCleartextTraffic",
+      "./plugins/withIOSTeam"
     ],
     "ios": {
       "bundleIdentifier": "io.drmiracle.app",
       "buildNumber": "1.5.0",
       "version": "1.5.0",
       "supportsTablet": true,
+      "teamId": "3LC3JLW6J5",
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false
       }

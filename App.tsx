@@ -8,6 +8,7 @@ import {
 } from "react-native-safe-area-context";
 import { useWebViewBackHandler } from "./shared/hooks";
 import { useSplashScreen } from "./features/splash/useSplashScreen";
+import { handleShouldStartLoadWithRequest } from "./shared/lib";
 
 function AppContent() {
   const insets = useSafeAreaInsets();
@@ -31,6 +32,7 @@ function AppContent() {
           source={{ uri: WEBVIEW_URL }}
           onNavigationStateChange={handleNavigationStateChange}
           onLoadEnd={handleWebViewLoadEnd}
+          onShouldStartLoadWithRequest={handleShouldStartLoadWithRequest}
           allowsBackForwardNavigationGestures={true}
           // Pull-to-Refresh 설정
           pullToRefreshEnabled={true}
