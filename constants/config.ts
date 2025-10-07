@@ -10,15 +10,9 @@ export const SUPABASE_CONFIG = {
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhtendibG13dXNyeGJ5cWN2dGx1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQ2Mzk4NzMsImV4cCI6MjA3MDIxNTg3M30.dM9HxtZiOdL13rIsywjfeF_XZNItPk4JQTK3bQn8hJ4",
 } as const;
 
-// 웹뷰 설정
-export const WEBVIEW_CONFIG = {
-  baseUrl: "http://172.30.1.100:3000",
-  //   baseUrl: "https://k-doc.kr",
-  productionUrl: "https://k-doc.kr", // 프로덕션 URL
-} as const;
-
 // 딥링크 설정
 export const DEEP_LINK_CONFIG = {
   scheme: "kdoc",
   callbackPath: "/auth/callback",
+  redirectUri: "kdoc://auth/callback",
 } as const;

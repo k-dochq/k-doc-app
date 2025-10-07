@@ -34,8 +34,8 @@ export async function startSocialLogin(
     const { data, error } = await supabase.auth.signInWithOAuth({
       provider,
       options: {
-        redirectTo,
-        // skipBrowserRedirect: false,
+        redirectTo: DEEP_LINK_CONFIG.redirectUri,
+        skipBrowserRedirect: false,
         queryParams: {
           access_type: "offline",
           prompt: "consent",

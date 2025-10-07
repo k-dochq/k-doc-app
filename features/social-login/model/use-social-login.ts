@@ -2,7 +2,7 @@
  * 소셜로그인 메인 로직
  */
 
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { WebView, WebViewMessageEvent } from "react-native-webview";
 import { Alert } from "react-native";
 import {
@@ -14,18 +14,61 @@ import {
   loadCallbackInWebView,
   checkInitialDeepLink,
   parseDeepLinkUrl,
+  loadSetSessionInWebView,
 } from "../lib/deep-link-utils";
-import type { DeepLinkParams } from "shared/types/webview-messages";
+import type {
+  DeepLinkParams,
+  WebViewLoginRequest,
+} from "shared/types/webview-messages";
+import { supabase } from "shared/lib/supabase";
 
 /**
  * 소셜로그인 훅
  */
 export function useSocialLogin(webViewRef: React.RefObject<WebView | null>) {
+  // 웹뷰 메시지에서 받은 로케일과 리다이렉트 경로를 저장
+  const loginContextRef = useRef<{ locale?: string; redirectPath?: string }>(
+    {}
+  );
+
   // 딥링크 처리
   useEffect(() => {
-    const handleDeepLink = (params: DeepLinkParams) => {
+    const handleDeepLink = async (params: DeepLinkParams) => {
       if (params.code) {
-        loadCallbackInWebView(webViewRef, params.code);
+        try {
+          const { data, error } = await supabase.auth.exchangeCodeForSession(
+            params.code
+          );
+
+          if (error) {
+            Alert.alert(
+              "Login Failed",
+              error.message || "Failed to exchange code for session."
+            );
+            return;
+          }
+
+          const accessToken = data.session?.access_token;
+          const refreshToken = data.session?.refresh_token;
+
+          if (accessToken && refreshToken) {
+            await loadSetSessionInWebView(
+              webViewRef,
+              accessToken,
+              refreshToken,
+              loginContextRef.current.locale,
+              loginContextRef.current.redirectPath
+            );
+          } else {
+            Alert.alert(
+              "Login Failed",
+              "Missing tokens from Supabase session."
+            );
+          }
+        } catch (e) {
+          const message = e instanceof Error ? e.message : "Unknown error";
+          Alert.alert("Login Failed", message);
+        }
       } else if (params.error) {
         Alert.alert(
           "Login Failed",
@@ -52,9 +95,17 @@ export function useSocialLogin(webViewRef: React.RefObject<WebView | null>) {
   // 웹뷰 메시지 처리
   const handleWebViewMessage = (event: WebViewMessageEvent) => {
     try {
-      const message = parseWebViewMessage(event.nativeEvent.data);
+      const message = parseWebViewMessage(
+        event.nativeEvent.data
+      ) as WebViewLoginRequest;
 
       if (message) {
+        // 로케일과 리다이렉트 경로 저장
+        loginContextRef.current = {
+          locale: message.locale,
+          redirectPath: message.redirectPath,
+        };
+
         startSocialLogin(message.provider);
       }
     } catch (error) {

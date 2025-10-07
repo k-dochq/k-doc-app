@@ -2,43 +2,17 @@
  * 딥링크 처리 관련 유틸리티 함수들
  */
 
+import { WEBVIEW_URL } from "constants/urls";
 import * as Linking from "expo-linking";
 import { Alert } from "react-native";
 import { WebView } from "react-native-webview";
 import type { DeepLinkParams } from "shared/types/webview-messages";
-import { WEBVIEW_CONFIG } from "../../../constants/config";
 
 /**
  * 딥링크 URL 파싱 (Supabase OAuth 응답 처리)
  */
 export function parseDeepLinkUrl(url: string): DeepLinkParams | null {
   try {
-    // URL fragment에서 access_token 추출 (Supabase OAuth 응답)
-    if (url.includes("#access_token=")) {
-      const fragment = url.split("#")[1];
-      const params = new URLSearchParams(fragment);
-
-      const accessToken = params.get("access_token");
-      const error = params.get("error");
-      const errorDescription = params.get("error_description");
-
-      if (accessToken) {
-        return {
-          code: accessToken,
-          error: error || undefined,
-          error_description: errorDescription || undefined,
-        };
-      }
-
-      if (error) {
-        return {
-          error: error,
-          error_description: errorDescription || undefined,
-        };
-      }
-    }
-
-    // 일반적인 쿼리 파라미터 처리
     const parsed = Linking.parse(url);
     return parsed.queryParams as DeepLinkParams;
   } catch (error) {
@@ -51,9 +25,35 @@ export function parseDeepLinkUrl(url: string): DeepLinkParams | null {
  */
 export function createWebViewCallbackUrl(
   code: string,
-  baseUrl: string = WEBVIEW_CONFIG.baseUrl
+  baseUrl: string = WEBVIEW_URL
 ): string {
   return `${baseUrl}/auth/callback?code=${encodeURIComponent(code)}`;
+}
+
+/**
+ * 웹뷰 set-session URL 생성 (액세스/리프레시 토큰 전달)
+ */
+export function createWebViewSetSessionUrl(
+  accessToken: string,
+  refreshToken: string,
+  locale?: string,
+  redirectPath?: string,
+  baseUrl: string = WEBVIEW_URL
+): string {
+  const params = new URLSearchParams({
+    access_token: accessToken,
+    refresh_token: refreshToken,
+  });
+
+  if (locale) {
+    params.append("locale", locale);
+  }
+
+  if (redirectPath) {
+    params.append("redirectPath", redirectPath);
+  }
+
+  return `${baseUrl}/auth/set-session?${params.toString()}`;
 }
 
 /**
@@ -73,6 +73,31 @@ export async function loadCallbackInWebView(
     }
   } catch (error) {
     Alert.alert("Error", "Failed to return to the app after login.");
+  }
+}
+
+/**
+ * 웹뷰로 set-session URL 로드 (토큰 쿠키 설정 유도)
+ */
+export async function loadSetSessionInWebView(
+  webViewRef: React.RefObject<WebView | null>,
+  accessToken: string,
+  refreshToken: string,
+  locale?: string,
+  redirectPath?: string
+): Promise<void> {
+  try {
+    const url = createWebViewSetSessionUrl(
+      accessToken,
+      refreshToken,
+      locale,
+      redirectPath
+    );
+    if (webViewRef.current) {
+      webViewRef.current.injectJavaScript(`window.location.href = '${url}';`);
+    }
+  } catch (error) {
+    Alert.alert("Error", "Failed to set session in WebView.");
   }
 }
 

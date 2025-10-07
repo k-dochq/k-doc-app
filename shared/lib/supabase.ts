@@ -10,10 +10,10 @@ export const supabase = createClient(
   SUPABASE_CONFIG.anonKey,
   {
     auth: {
-      // 모바일 앱에서 사용할 수 있도록 설정
+      flowType: "pkce",
       autoRefreshToken: true,
       persistSession: true,
-      detectSessionInUrl: false, // 딥링크로 처리하므로 false
+      detectSessionInUrl: false,
     },
   }
 );
