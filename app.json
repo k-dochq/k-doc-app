@@ -48,7 +48,7 @@
     },
     "android": {
       "package": "io.drmiracle.app",
-      "versionCode": 15,
+      "versionCode": 42,
       "versionName": "1.5.002",
       "adaptiveIcon": {
         "foregroundImage": "./assets/app-icon.png",
