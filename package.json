@@ -14,7 +14,8 @@
     "rebuild:android": "rm -rf android && npm run prebuild:android && npm run android",
     "rebuild:ios": "npm run prebuild:ios && npm run ios",
     "type-check": "tsc --noEmit",
-    "type-check:watch": "tsc --noEmit --watch"
+    "type-check:watch": "tsc --noEmit --watch",
+    "generate-apple-secret": "tsx scripts/generate-apple-secret.ts"
   },
   "dependencies": {
     "expo": "~54.0.10",
@@ -22,6 +23,7 @@
     "expo-dev-client": "~6.0.13",
     "expo-splash-screen": "~31.0.10",
     "expo-status-bar": "~3.0.8",
+    "jose": "^6.1.0",
     "react": "19.1.0",
     "react-native": "0.81.4",
     "react-native-safe-area-context": "~5.6.0",
@@ -29,6 +31,7 @@
   },
   "devDependencies": {
     "@types/react": "~19.1.0",
+    "tsx": "^4.20.6",
     "typescript": "~5.9.2"
   },
   "private": true
