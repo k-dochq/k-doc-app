@@ -1,6 +1,7 @@
 import { WebView } from "react-native-webview";
 import Constants from "expo-constants";
 import { StyleSheet, View, ImageBackground } from "react-native";
+import { useRef } from "react";
 import { WEBVIEW_URL } from "./constants/urls";
 import {
   SafeAreaProvider,
@@ -9,13 +10,20 @@ import {
 import { useWebViewBackHandler } from "./shared/hooks";
 import { useSplashScreen } from "./features/splash/useSplashScreen";
 import { handleShouldStartLoadWithRequest } from "./shared/lib";
+import { useSocialLogin } from "./features/social-login";
 
 function AppContent() {
   const insets = useSafeAreaInsets();
   const { showFakeSplash, handleWebViewLoadEnd } = useSplashScreen();
 
+  // WebView ref를 한 번만 선언하고 모든 훅에서 공유
+  const webViewRef = useRef<WebView | null>(null);
+
   // 안드로이드 백버튼 핸들링
-  const { webViewRef, handleNavigationStateChange } = useWebViewBackHandler();
+  const { handleNavigationStateChange } = useWebViewBackHandler(webViewRef);
+
+  // 소셜로그인 기능
+  const { handleWebViewMessage } = useSocialLogin(webViewRef);
 
   return (
     <View style={[styles.container, { paddingBottom: insets.bottom }]}>
@@ -33,11 +41,17 @@ function AppContent() {
           onNavigationStateChange={handleNavigationStateChange}
           onLoadEnd={handleWebViewLoadEnd}
           onShouldStartLoadWithRequest={handleShouldStartLoadWithRequest}
+          onMessage={handleWebViewMessage}
           allowsBackForwardNavigationGestures={true}
           // Pull-to-Refresh 설정
           pullToRefreshEnabled={true}
           bounces={true}
           scrollEnabled={true}
+          // 웹뷰 메시지 통신을 위한 설정
+          javaScriptEnabled={true}
+          domStorageEnabled={true}
+          sharedCookiesEnabled={true}
+          thirdPartyCookiesEnabled={true}
         />
       )}
     </View>

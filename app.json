@@ -12,9 +12,7 @@
       "resizeMode": "cover",
       "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "plugins": [
       [
         "expo-splash-screen",
@@ -37,6 +35,7 @@
       "./plugins/withIOSTeam",
       "expo-asset"
     ],
+    "scheme": "kdoc",
     "ios": {
       "bundleIdentifier": "io.drmiracle.app",
       "buildNumber": "1.5.001",

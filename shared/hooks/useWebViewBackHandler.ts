@@ -3,16 +3,16 @@ import { BackHandler } from "react-native";
 import { WebView, WebViewNavigation } from "react-native-webview";
 
 interface UseWebViewBackHandlerReturn {
-  webViewRef: RefObject<WebView | null>;
   handleNavigationStateChange: (navState: WebViewNavigation) => void;
 }
 
 /**
  * 안드로이드 백버튼으로 웹뷰 뒤로가기를 처리하는 커스텀 훅
- * WebView ref와 navigation state change 핸들러를 함께 제공합니다.
+ * WebView ref를 매개변수로 받아서 사용합니다.
  */
-export function useWebViewBackHandler(): UseWebViewBackHandlerReturn {
-  const webViewRef = useRef<WebView>(null);
+export function useWebViewBackHandler(
+  webViewRef: RefObject<WebView | null>
+): UseWebViewBackHandlerReturn {
   const canGoBackRef = useRef(false);
 
   const handleNavigationStateChange = (navState: WebViewNavigation) => {
@@ -36,10 +36,9 @@ export function useWebViewBackHandler(): UseWebViewBackHandlerReturn {
 
     // 컴포넌트 언마운트 시 이벤트 리스너 제거
     return () => subscription.remove();
-  }, []);
+  }, [webViewRef]);
 
   return {
-    webViewRef,
     handleNavigationStateChange,
   };
 }
