@@ -1,12 +1,16 @@
-const { withGradleProperties } = require("@expo/config-plugins");
+const {
+  withGradleProperties,
+  withAppBuildGradle,
+} = require("@expo/config-plugins");
 
 module.exports = function withKeystoreConfig(config) {
-  return withGradleProperties(config, async (config) => {
+  // 1. Gradle properties 설정
+  config = withGradleProperties(config, async (config) => {
     config.modResults.push(
       {
         type: "property",
         key: "MYAPP_UPLOAD_STORE_FILE",
-        value: "../secret/@jahun135__k-doc-app.jks",
+        value: "../../secret/@jahun135__k-doc-app.jks",
       },
       {
         type: "property",
@@ -26,4 +30,44 @@ module.exports = function withKeystoreConfig(config) {
     );
     return config;
   });
+
+  // 2. build.gradle 파일의 signingConfigs와 buildTypes 수정
+  config = withAppBuildGradle(config, (config) => {
+    const modResults = config.modResults;
+
+    // signingConfigs 섹션에 release 설정 추가
+    const signingConfigsPattern =
+      /(signingConfigs\s*\{[^}]*debug\s*\{[^}]*\}[^}]*)(\})/s;
+    const signingConfigsMatch = modResults.contents.match(
+      signingConfigsPattern
+    );
+
+    if (signingConfigsMatch) {
+      const releaseSigningConfig = `
+        release {
+            storeFile file(MYAPP_UPLOAD_STORE_FILE)
+            storePassword MYAPP_UPLOAD_STORE_PASSWORD
+            keyAlias MYAPP_UPLOAD_KEY_ALIAS
+            keyPassword MYAPP_UPLOAD_KEY_PASSWORD
+        }`;
+
+      modResults.contents = modResults.contents.replace(
+        signingConfigsPattern,
+        `$1${releaseSigningConfig}
+    $2`
+      );
+    }
+
+    // buildTypes의 release에서 signingConfig를 release로 변경
+    const releaseBuildTypePattern =
+      /(release\s*\{[^}]*signingConfig\s+)signingConfigs\.debug([^}]*\})/s;
+    modResults.contents = modResults.contents.replace(
+      releaseBuildTypePattern,
+      "$1signingConfigs.release$2"
+    );
+
+    return config;
+  });
+
+  return config;
 };
