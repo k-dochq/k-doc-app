@@ -41,3 +41,4 @@ yarn-error.*
 /android
 
 /secret
+google-services.json

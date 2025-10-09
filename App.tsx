@@ -7,7 +7,7 @@ import {
   SafeAreaProvider,
   useSafeAreaInsets,
 } from "react-native-safe-area-context";
-import { useWebViewBackHandler } from "./shared/hooks";
+import { useWebViewBackHandler, usePushNotifications } from "./shared/hooks";
 import { useSplashScreen } from "./features/splash/useSplashScreen";
 import { handleShouldStartLoadWithRequest } from "./shared/lib";
 import { useSocialLogin } from "./features/social-login";
@@ -24,6 +24,9 @@ function AppContent() {
 
   // 소셜로그인 기능
   const { handleWebViewMessage } = useSocialLogin(webViewRef);
+
+  // 푸시 알림 기능
+  const { token, isLoading, error } = usePushNotifications();
 
   return (
     <View style={[styles.container, { paddingBottom: insets.bottom }]}>

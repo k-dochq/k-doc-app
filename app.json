@@ -50,6 +50,7 @@
       "package": "io.drmiracle.app",
       "versionCode": 42,
       "versionName": "1.5.002",
+      "googleServicesFile": "./google-services.json",
       "adaptiveIcon": {
         "foregroundImage": "./assets/app-icon.png",
         "backgroundColor": "#ffffff",
