@@ -52,6 +52,19 @@ export function useSocialLogin(webViewRef: React.RefObject<WebView | null>) {
           const refreshToken = data.session?.refresh_token;
 
           if (accessToken && refreshToken) {
+            // RN에서도 세션 설정
+            const { error: sessionError } = await supabase.auth.setSession({
+              access_token: accessToken,
+              refresh_token: refreshToken,
+            });
+
+            if (sessionError) {
+              console.warn("❌ RN 세션 설정 실패:", sessionError.message);
+            } else {
+              console.log("✅ RN 소셜 로그인 세션 설정 완료");
+            }
+
+            // 웹뷰에도 세션 전달
             await loadSetSessionInWebView(
               webViewRef,
               accessToken,

@@ -12,7 +12,9 @@
       "resizeMode": "cover",
       "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "plugins": [
       [
         "expo-splash-screen",
@@ -33,7 +35,8 @@
       "./plugins/withIOSVersion",
       "./plugins/withAndroidCleartextTraffic",
       "./plugins/withIOSTeam",
-      "expo-asset"
+      "expo-asset",
+      "expo-secure-store"
     ],
     "scheme": "kdoc",
     "ios": {

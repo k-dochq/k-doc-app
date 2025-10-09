@@ -7,7 +7,13 @@ import {
   SafeAreaProvider,
   useSafeAreaInsets,
 } from "react-native-safe-area-context";
-import { useWebViewBackHandler, usePushNotifications } from "./shared/hooks";
+import {
+  useWebViewBackHandler,
+  usePushNotifications,
+  useWebViewMessageHandler,
+  useUserDebug,
+  usePushTokenRegistration,
+} from "./shared/hooks";
 import { useSplashScreen } from "./features/splash/useSplashScreen";
 import { handleShouldStartLoadWithRequest } from "./shared/lib";
 import { useSocialLogin } from "./features/social-login";
@@ -23,10 +29,23 @@ function AppContent() {
   const { handleNavigationStateChange } = useWebViewBackHandler(webViewRef);
 
   // 소셜로그인 기능
-  const { handleWebViewMessage } = useSocialLogin(webViewRef);
+  const { handleWebViewMessage: handleSocialLoginMessage } =
+    useSocialLogin(webViewRef);
+
+  // 웹뷰 메시지 핸들러 (로그인 성공 등)
+  const { handleWebViewMessage } = useWebViewMessageHandler(webViewRef);
+
+  // 통합 메시지 핸들러
+  const handleCombinedMessage = (event: any) => {
+    handleSocialLoginMessage(event);
+    handleWebViewMessage(event);
+  };
 
   // 푸시 알림 기능
   const { token, isLoading, error } = usePushNotifications();
+
+  // 푸시 토큰 등록 (로그인된 사용자에게만)
+  usePushTokenRegistration(token);
 
   return (
     <View style={[styles.container, { paddingBottom: insets.bottom }]}>
@@ -44,7 +63,7 @@ function AppContent() {
           onNavigationStateChange={handleNavigationStateChange}
           onLoadEnd={handleWebViewLoadEnd}
           onShouldStartLoadWithRequest={handleShouldStartLoadWithRequest}
-          onMessage={handleWebViewMessage}
+          onMessage={handleCombinedMessage}
           allowsBackForwardNavigationGestures={true}
           // Pull-to-Refresh 설정
           pullToRefreshEnabled={true}

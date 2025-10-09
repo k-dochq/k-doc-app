@@ -1,8 +1,5 @@
-/**
- * Supabase 클라이언트 설정
- */
-
 import { createClient } from "@supabase/supabase-js";
+import * as SecureStore from "expo-secure-store";
 import { SUPABASE_CONFIG } from "../../constants/config";
 
 export const supabase = createClient(
@@ -11,6 +8,11 @@ export const supabase = createClient(
   {
     auth: {
       flowType: "pkce",
+      storage: {
+        getItem: SecureStore.getItemAsync,
+        setItem: SecureStore.setItemAsync,
+        removeItem: SecureStore.deleteItemAsync,
+      },
       autoRefreshToken: true,
       persistSession: true,
       detectSessionInUrl: false,
