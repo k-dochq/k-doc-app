@@ -3,6 +3,8 @@ import { Platform } from "react-native";
 import * as Notifications from "expo-notifications";
 import * as Device from "expo-device";
 import Constants from "expo-constants";
+import { WebView } from "react-native-webview";
+import { createNotificationClickHandler } from "../lib/notificationClickHandler";
 
 // 알림 핸들러 설정
 Notifications.setNotificationHandler({
@@ -22,7 +24,9 @@ export interface PushNotificationHook {
   registerForPush: () => Promise<void>;
 }
 
-export function usePushNotifications(): PushNotificationHook {
+export function usePushNotifications(
+  webViewRef: React.RefObject<WebView | null>
+): PushNotificationHook {
   const [token, setToken] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -105,21 +109,21 @@ export function usePushNotifications(): PushNotificationHook {
     // 알림 수신 리스너
     const notificationReceivedSubscription =
       Notifications.addNotificationReceivedListener((notification) => {
-        console.log("📩 알림 수신:", notification);
+        // 알림 수신 처리
       });
 
     // 알림 클릭 리스너
     const notificationResponseSubscription =
-      Notifications.addNotificationResponseReceivedListener((response) => {
-        console.log("🖱️ 알림 클릭:", response);
-      });
+      Notifications.addNotificationResponseReceivedListener(
+        createNotificationClickHandler(webViewRef)
+      );
 
     // 정리 함수
     return () => {
       notificationReceivedSubscription.remove();
       notificationResponseSubscription.remove();
     };
-  }, []);
+  }, [webViewRef]);
 
   return {
     token,

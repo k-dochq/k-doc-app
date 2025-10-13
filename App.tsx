@@ -29,8 +29,8 @@ function AppContent() {
   const { handleNavigationStateChange } = useWebViewBackHandler(webViewRef);
 
   // 소셜로그인 기능
-  const { handleWebViewMessage: handleSocialLoginMessage } =
-    useSocialLogin(webViewRef);
+  const { handleWebViewMessage: handleSocialLoginMessage, loginContextRef } =
+    useSocialLogin();
 
   // 웹뷰 메시지 핸들러 (로그인 성공 등)
   const { handleWebViewMessage } = useWebViewMessageHandler(webViewRef);
@@ -42,7 +42,7 @@ function AppContent() {
   };
 
   // 푸시 알림 기능
-  const { token, isLoading, error } = usePushNotifications();
+  const { token, isLoading, error } = usePushNotifications(webViewRef);
 
   // 푸시 토큰 등록 (로그인된 사용자에게만)
   usePushTokenRegistration(token);
