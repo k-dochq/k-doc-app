@@ -1,5 +1,6 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import * as SplashScreen from "expo-splash-screen";
+import { WebView } from "react-native-webview";
 
 // Keep the splash screen visible while we fetch resources
 SplashScreen.preventAutoHideAsync();
@@ -18,13 +19,16 @@ export function useSplashScreen() {
     SplashScreen.hideAsync();
   }, []);
 
-  const handleWebViewLoadEnd = () => {
-    // 최소 1~2초 후 가짜 스플래시 제거
-    setTimeout(() => setShowFakeSplash(false), 1200);
-  };
+  // 스플래시 스크린 숨김 액션 생성
+  const getSplashScreenAction = useCallback(() => {
+    return async (webViewRef: React.RefObject<WebView | null>) => {
+      // 최소 1~2초 후 가짜 스플래시 제거
+      setTimeout(() => setShowFakeSplash(false), 1200);
+    };
+  }, []);
 
   return {
     showFakeSplash,
-    handleWebViewLoadEnd,
+    getSplashScreenAction,
   };
 }

@@ -11,7 +11,6 @@ import {
 } from "../lib/social-login-utils";
 import {
   setupDeepLinkListener,
-  loadCallbackInWebView,
   checkInitialDeepLink,
   parseDeepLinkUrl,
   loadSetSessionInWebView,
@@ -128,5 +127,6 @@ export function useSocialLogin(webViewRef: React.RefObject<WebView | null>) {
 
   return {
     handleWebViewMessage,
+    loginContextRef,
   };
 }

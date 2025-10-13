@@ -18,7 +18,6 @@
     "generate-apple-secret": "tsx scripts/generate-apple-secret.ts"
   },
   "dependencies": {
-    "@react-native-async-storage/async-storage": "^2.2.0",
     "@supabase/supabase-js": "^2.75.0",
     "escape-string-regexp": "^5.0.0",
     "expo": "~54.0.10",

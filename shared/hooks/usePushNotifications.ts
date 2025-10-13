@@ -70,8 +70,6 @@ export function usePushNotifications(
         throw new Error("❌ projectId 누락 - EAS 프로젝트 ID를 확인해주세요");
       }
 
-      console.log("projectId", projectId);
-
       // Expo 푸시 토큰 생성
       const pushToken = (
         await Notifications.getExpoPushTokenAsync({ projectId })
