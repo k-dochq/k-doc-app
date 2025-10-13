@@ -29,8 +29,8 @@ function AppContent() {
   const { handleNavigationStateChange } = useWebViewBackHandler(webViewRef);
 
   // 소셜로그인 기능
-  const { handleWebViewMessage: handleSocialLoginMessage, loginContextRef } =
-    useSocialLogin();
+  const { handleWebViewMessage: handleSocialLoginMessage } =
+    useSocialLogin(webViewRef);
 
   // 웹뷰 메시지 핸들러 (로그인 성공 등)
   const { handleWebViewMessage } = useWebViewMessageHandler(webViewRef);
