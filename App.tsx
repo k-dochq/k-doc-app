@@ -12,7 +12,6 @@ import {
   usePushNotifications,
   useWebViewMessageHandler,
   useUserDebug,
-  usePushTokenRegistration,
   useWebViewLoadEnd,
   useInitialUrlFromNotification,
 } from "./shared/hooks";
@@ -33,6 +32,9 @@ function AppContent() {
   // 안드로이드 백버튼 핸들링
   const { handleNavigationStateChange } = useWebViewBackHandler(webViewRef);
 
+  // 푸시 알림 기능 (토큰 가져오기 및 서버 등록)
+  usePushNotifications(webViewRef);
+
   // 소셜로그인 기능
   const { handleWebViewMessage: handleSocialLoginMessage } =
     useSocialLogin(webViewRef);
@@ -45,12 +47,6 @@ function AppContent() {
     handleSocialLoginMessage(event);
     handleWebViewMessage(event);
   };
-
-  // 푸시 알림 기능
-  const { token, isLoading, error } = usePushNotifications(webViewRef);
-
-  // 푸시 토큰 등록 (로그인된 사용자에게만)
-  usePushTokenRegistration(token);
 
   // WebView 로드 완료 시 처리 로직
   const { handleWebViewLoadEnd: handleWebViewLoadEndWithActions } =

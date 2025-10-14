@@ -20,6 +20,7 @@ import type {
   WebViewLoginRequest,
 } from "shared/types/webview-messages";
 import { supabase } from "shared/lib/supabase";
+import { getAndRegisterPushToken } from "shared/lib/pushTokenManager";
 
 /**
  * 소셜로그인 훅
@@ -61,6 +62,18 @@ export function useSocialLogin(webViewRef: React.RefObject<WebView | null>) {
               console.warn("❌ RN 세션 설정 실패:", sessionError.message);
             } else {
               console.log("✅ RN 소셜 로그인 세션 설정 완료");
+
+              // 소셜로그인 성공 시 푸시 토큰 등록
+              console.log("🔔 소셜로그인 성공, 푸시 토큰 등록 시도");
+              const pushResult = await getAndRegisterPushToken();
+              if (pushResult.success) {
+                console.log("✅ 소셜로그인 후 푸시 토큰 등록 성공");
+              } else {
+                console.error(
+                  "❌ 소셜로그인 후 푸시 토큰 등록 실패:",
+                  pushResult.error
+                );
+              }
             }
 
             // 웹뷰에도 세션 전달
