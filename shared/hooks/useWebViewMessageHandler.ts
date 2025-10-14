@@ -33,12 +33,6 @@ export function useWebViewMessageHandler(
         return;
       }
 
-      console.log("🔐 로그인 성공 메시지 수신:", {
-        userId: user.id,
-        email: user.email,
-        displayName: user.display_name,
-      });
-
       // Supabase 세션 설정
       const { data: sessionData, error } = await supabase.auth.setSession({
         access_token,

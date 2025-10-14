@@ -12,7 +12,8 @@ import {
   usePushNotifications,
   useWebViewMessageHandler,
   useUserDebug,
-  usePushTokenRegistration,
+  useWebViewLoadEnd,
+  useInitialUrlFromNotification,
 } from "./shared/hooks";
 import { useSplashScreen } from "./features/splash/useSplashScreen";
 import { handleShouldStartLoadWithRequest } from "./shared/lib";
@@ -20,13 +21,19 @@ import { useSocialLogin } from "./features/social-login";
 
 function AppContent() {
   const insets = useSafeAreaInsets();
-  const { showFakeSplash, handleWebViewLoadEnd } = useSplashScreen();
+  const { showFakeSplash, getSplashScreenAction } = useSplashScreen();
 
   // WebView ref를 한 번만 선언하고 모든 훅에서 공유
   const webViewRef = useRef<WebView | null>(null);
 
+  // 알림으로부터 초기 URL 결정
+  const initialUrl = useInitialUrlFromNotification(WEBVIEW_URL);
+
   // 안드로이드 백버튼 핸들링
   const { handleNavigationStateChange } = useWebViewBackHandler(webViewRef);
+
+  // 푸시 알림 기능 (토큰 가져오기 및 서버 등록)
+  usePushNotifications(webViewRef);
 
   // 소셜로그인 기능
   const { handleWebViewMessage: handleSocialLoginMessage } =
@@ -41,11 +48,12 @@ function AppContent() {
     handleWebViewMessage(event);
   };
 
-  // 푸시 알림 기능
-  const { token, isLoading, error } = usePushNotifications();
-
-  // 푸시 토큰 등록 (로그인된 사용자에게만)
-  usePushTokenRegistration(token);
+  // WebView 로드 완료 시 처리 로직
+  const { handleWebViewLoadEnd: handleWebViewLoadEndWithActions } =
+    useWebViewLoadEnd({
+      webViewRef,
+      actions: [getSplashScreenAction()],
+    });
 
   return (
     <View style={[styles.container, { paddingBottom: insets.bottom }]}>
@@ -59,9 +67,9 @@ function AppContent() {
         <WebView
           ref={webViewRef}
           style={styles.webview}
-          source={{ uri: WEBVIEW_URL }}
+          source={{ uri: initialUrl }}
           onNavigationStateChange={handleNavigationStateChange}
-          onLoadEnd={handleWebViewLoadEnd}
+          onLoadEnd={handleWebViewLoadEndWithActions}
           onShouldStartLoadWithRequest={handleShouldStartLoadWithRequest}
           onMessage={handleCombinedMessage}
           allowsBackForwardNavigationGestures={true}
