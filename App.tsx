@@ -1,37 +1,45 @@
-import { WebView } from "react-native-webview";
-import Constants from "expo-constants";
-import { StyleSheet, View, ImageBackground } from "react-native";
-import { useRef } from "react";
-import { WEBVIEW_URL } from "./constants/urls";
+import React from "react";
+import { StyleSheet, View } from "react-native";
 import {
   SafeAreaProvider,
   useSafeAreaInsets,
 } from "react-native-safe-area-context";
+import { WebView, WebViewMessageEvent } from "react-native-webview";
 import {
-  useWebViewBackHandler,
   usePushNotifications,
   useWebViewMessageHandler,
   useWebViewShareHandler,
   useUserDebug,
-  useWebViewLoadEnd,
   useInitialUrlFromNotification,
 } from "./shared/hooks";
-import { useSplashScreen } from "./features/splash/useSplashScreen";
-import { handleShouldStartLoadWithRequest } from "./shared/lib";
+import { WEBVIEW_URL } from "./constants/urls";
 import { useSocialLogin } from "./features/social-login";
+import {
+  useSplashTimer,
+  useSplashVisibility,
+  SplashScreen,
+} from "./features/splash";
+import { WebViewContainer } from "./features/webview";
 
 function AppContent() {
   const insets = useSafeAreaInsets();
-  const { showFakeSplash, getSplashScreenAction } = useSplashScreen();
+
+  const { minTimeElapsed } = useSplashTimer();
+
+  // WebView 상태 관리 (로딩 완료 여부)
+  const [isWebViewReady, setIsWebViewReady] = React.useState(false);
+
+  // 스플래시 표시 여부 및 페이드 애니메이션
+  const { showSplash, fadeAnim } = useSplashVisibility({
+    minTimeElapsed,
+    isWebViewReady,
+  });
 
   // WebView ref를 한 번만 선언하고 모든 훅에서 공유
-  const webViewRef = useRef<WebView | null>(null);
+  const webViewRef = React.useRef<WebView | null>(null);
 
   // 알림으로부터 초기 URL 결정
   const initialUrl = useInitialUrlFromNotification(WEBVIEW_URL);
-
-  // 안드로이드 백버튼 핸들링
-  const { handleNavigationStateChange } = useWebViewBackHandler(webViewRef);
 
   // 푸시 알림 기능 (토큰 가져오기 및 서버 등록)
   usePushNotifications(webViewRef);
@@ -48,46 +56,36 @@ function AppContent() {
     useWebViewShareHandler(webViewRef);
 
   // 통합 메시지 핸들러
-  const handleCombinedMessage = (event: any) => {
+  const handleCombinedMessage = (event: WebViewMessageEvent) => {
     handleSocialLoginMessage(event);
     handleWebViewMessage(event);
     handleShareMessage(event);
   };
 
-  // WebView 로드 완료 시 처리 로직
-  const { handleWebViewLoadEnd: handleWebViewLoadEndWithActions } =
-    useWebViewLoadEnd({
-      webViewRef,
-      actions: [getSplashScreenAction()],
-    });
+  // WebView 로딩 완료 핸들러
+  const handleWebViewLoadEnd = () => {
+    setIsWebViewReady(true);
+  };
+
+  // 로딩 인디케이터 표시 여부 (3초 이상 걸릴 경우)
+  const showLoadingIndicator = minTimeElapsed && !isWebViewReady;
 
   return (
     <View style={[styles.container, { paddingBottom: insets.bottom }]}>
-      {showFakeSplash ? (
-        <ImageBackground
-          source={require("./assets/splash.png")}
-          style={styles.splashBackground}
-          resizeMode="cover"
-        />
-      ) : (
-        <WebView
-          ref={webViewRef}
-          style={styles.webview}
-          source={{ uri: initialUrl }}
-          onNavigationStateChange={handleNavigationStateChange}
-          onLoadEnd={handleWebViewLoadEndWithActions}
-          onShouldStartLoadWithRequest={handleShouldStartLoadWithRequest}
-          onMessage={handleCombinedMessage}
-          allowsBackForwardNavigationGestures={true}
-          // Pull-to-Refresh 설정
-          pullToRefreshEnabled={true}
-          bounces={true}
-          scrollEnabled={true}
-          // 웹뷰 메시지 통신을 위한 설정
-          javaScriptEnabled={true}
-          domStorageEnabled={true}
-          sharedCookiesEnabled={true}
-          thirdPartyCookiesEnabled={true}
+      {/* WebView 컨테이너 - 백그라운드에서 프리로딩 */}
+      <WebViewContainer
+        webViewRef={webViewRef}
+        onMessage={handleCombinedMessage}
+        showSplash={showSplash}
+        onLoadEnd={handleWebViewLoadEnd}
+        initialUrl={initialUrl}
+      />
+
+      {/* 스플래시 오버레이 */}
+      {showSplash && (
+        <SplashScreen
+          fadeAnim={fadeAnim}
+          showLoadingIndicator={showLoadingIndicator}
         />
       )}
     </View>
@@ -105,14 +103,5 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: Constants.statusBarHeight,
-  },
-  webview: {
-    flex: 1,
-  },
-  splashBackground: {
-    flex: 1,
-    width: "100%",
-    height: "100%",
   },
 });
