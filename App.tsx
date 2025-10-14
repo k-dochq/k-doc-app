@@ -11,6 +11,7 @@ import {
   useWebViewBackHandler,
   usePushNotifications,
   useWebViewMessageHandler,
+  useWebViewShareHandler,
   useUserDebug,
   useWebViewLoadEnd,
   useInitialUrlFromNotification,
@@ -42,10 +43,15 @@ function AppContent() {
   // 웹뷰 메시지 핸들러 (로그인 성공 등)
   const { handleWebViewMessage } = useWebViewMessageHandler(webViewRef);
 
+  // 웹뷰 공유 핸들러
+  const { handleWebViewMessage: handleShareMessage } =
+    useWebViewShareHandler(webViewRef);
+
   // 통합 메시지 핸들러
   const handleCombinedMessage = (event: any) => {
     handleSocialLoginMessage(event);
     handleWebViewMessage(event);
+    handleShareMessage(event);
   };
 
   // WebView 로드 완료 시 처리 로직

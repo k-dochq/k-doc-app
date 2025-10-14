@@ -35,6 +35,15 @@ export interface WebViewMessage {
 }
 
 /**
+ * 웹뷰로부터 받는 공유 요청 메시지 타입
+ */
+export interface WebViewShareRequest {
+  source: "kdoc-web";
+  type: "SHARE_REQUEST";
+  url: string;
+}
+
+/**
  * 딥링크 파라미터 타입
  */
 export interface DeepLinkParams {

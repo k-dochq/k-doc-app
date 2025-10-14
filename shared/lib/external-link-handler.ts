@@ -15,7 +15,8 @@ interface ShouldStartLoadWithRequestParams {
 const INTERNAL_DOMAINS = [
   "172.30.1.100:3000",
   "k-doc.kr",
-  "localhost:3000", // 개발 환경용
+  "192.168.50.135:3000",
+  "https://www.youtube.com",
 ];
 
 /**
@@ -44,6 +45,8 @@ export function handleShouldStartLoadWithRequest(
   request: ShouldStartLoadWithRequestParams
 ): boolean {
   const { url } = request;
+
+  console.log("url", url);
 
   // 내부 도메인이 아닌 경우 외부 브라우저에서 열기
   if (!isInternalDomain(url)) {
