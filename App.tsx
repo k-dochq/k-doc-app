@@ -1,6 +1,6 @@
 import { WebView } from "react-native-webview";
 import Constants from "expo-constants";
-import { StyleSheet, View, ImageBackground } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { useRef } from "react";
 import { WEBVIEW_URL } from "./constants/urls";
 import {
@@ -13,7 +13,6 @@ import {
   useWebViewMessageHandler,
   useWebViewShareHandler,
   useUserDebug,
-  useWebViewLoadEnd,
   useInitialUrlFromNotification,
 } from "./shared/hooks";
 import { useSplashScreen } from "./features/splash/useSplashScreen";
@@ -22,7 +21,7 @@ import { useSocialLogin } from "./features/social-login";
 
 function AppContent() {
   const insets = useSafeAreaInsets();
-  const { showFakeSplash, getSplashScreenAction } = useSplashScreen();
+  const { isWebViewLoaded, setIsWebViewLoaded } = useSplashScreen();
 
   // WebView ref를 한 번만 선언하고 모든 훅에서 공유
   const webViewRef = useRef<WebView | null>(null);
@@ -54,42 +53,27 @@ function AppContent() {
     handleShareMessage(event);
   };
 
-  // WebView 로드 완료 시 처리 로직
-  const { handleWebViewLoadEnd: handleWebViewLoadEndWithActions } =
-    useWebViewLoadEnd({
-      webViewRef,
-      actions: [getSplashScreenAction()],
-    });
-
   return (
     <View style={[styles.container, { paddingBottom: insets.bottom }]}>
-      {showFakeSplash ? (
-        <ImageBackground
-          source={require("./assets/splash.png")}
-          style={styles.splashBackground}
-          resizeMode="cover"
-        />
-      ) : (
-        <WebView
-          ref={webViewRef}
-          style={styles.webview}
-          source={{ uri: initialUrl }}
-          onNavigationStateChange={handleNavigationStateChange}
-          onLoadEnd={handleWebViewLoadEndWithActions}
-          onShouldStartLoadWithRequest={handleShouldStartLoadWithRequest}
-          onMessage={handleCombinedMessage}
-          allowsBackForwardNavigationGestures={true}
-          // Pull-to-Refresh 설정
-          pullToRefreshEnabled={true}
-          bounces={true}
-          scrollEnabled={true}
-          // 웹뷰 메시지 통신을 위한 설정
-          javaScriptEnabled={true}
-          domStorageEnabled={true}
-          sharedCookiesEnabled={true}
-          thirdPartyCookiesEnabled={true}
-        />
-      )}
+      <WebView
+        ref={webViewRef}
+        style={styles.webview}
+        source={{ uri: initialUrl }}
+        onNavigationStateChange={handleNavigationStateChange}
+        onLoadEnd={() => setIsWebViewLoaded(true)}
+        onShouldStartLoadWithRequest={handleShouldStartLoadWithRequest}
+        onMessage={handleCombinedMessage}
+        allowsBackForwardNavigationGestures={true}
+        // Pull-to-Refresh 설정
+        pullToRefreshEnabled={true}
+        bounces={true}
+        scrollEnabled={true}
+        // 웹뷰 메시지 통신을 위한 설정
+        javaScriptEnabled={true}
+        domStorageEnabled={true}
+        sharedCookiesEnabled={true}
+        thirdPartyCookiesEnabled={true}
+      />
     </View>
   );
 }
@@ -109,10 +93,5 @@ const styles = StyleSheet.create({
   },
   webview: {
     flex: 1,
-  },
-  splashBackground: {
-    flex: 1,
-    width: "100%",
-    height: "100%",
   },
 });
