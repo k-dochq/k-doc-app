@@ -5,3 +5,4 @@ export { useWebViewShareHandler } from "./useWebViewShareHandler";
 export { useUserDebug } from "./useUserDebug";
 export { useInitialUrlFromNotification } from "./useInitialUrlFromNotification";
 export { useSession } from "./useSession";
+export { useVersionCheck } from "./useVersionCheck";

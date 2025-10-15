@@ -7,3 +7,16 @@ export {
   handleShouldStartLoadWithRequest,
   type ShouldStartLoadWithRequestParams,
 } from "./external-link-handler";
+
+export {
+  compareVersions,
+  isUpdateRequired,
+  isUpdateRecommended,
+} from "./version-utils";
+
+export {
+  fetchVersionPolicy,
+  getCurrentPlatformPolicy,
+  type VersionPolicy,
+  type VersionPolicyResponse,
+} from "./versionPolicyService";

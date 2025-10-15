@@ -5,6 +5,7 @@ import {
   useSafeAreaInsets,
 } from "react-native-safe-area-context";
 import { WebView, WebViewMessageEvent } from "react-native-webview";
+import * as Sentry from "@sentry/react-native";
 import {
   usePushNotifications,
   useWebViewMessageHandler,
@@ -21,9 +22,28 @@ import {
   SplashScreen,
 } from "./features/splash";
 import { WebViewContainer } from "./features/webview";
+import {
+  ForceUpdateScreen,
+  useForceUpdateCheck,
+} from "./features/version-check";
+
+// Sentry 초기화
+Sentry.init({
+  dsn: "https://4fde45e54533ab79b9a06e91f7ba1673@o4510191631466496.ingest.de.sentry.io/4510191648243792",
+  // Adds more context data to events (IP address, cookies, user, etc.)
+  sendDefaultPii: true,
+  // Set tracesSampleRate to 1.0 to capture 100% of transactions for tracing.
+  tracesSampleRate: 1.0,
+  // Enable logs to be sent to Sentry
+  enableLogs: true,
+});
 
 function AppContent() {
   const insets = useSafeAreaInsets();
+
+  // 강제 업데이트 체크 (AppState 모니터링 포함)
+  const { forceUpdateRequired, updateMessage, storeUrl, onUpdatePress } =
+    useForceUpdateCheck();
 
   // 스플래시 타이머 (3초 최소 시간)
   const { minTimeElapsed } = useSplashTimer();
@@ -54,6 +74,14 @@ function AppContent() {
 
     initializeSound();
   }, [preload, playOnce, showSplash]);
+
+  // Sentry 테스트 (개발 환경에서만)
+  React.useEffect(() => {
+    if (__DEV__) {
+      console.log("Sentry 초기화 완료 - 테스트 에러 전송");
+      Sentry.captureException(new Error("Sentry 테스트 에러입니다"));
+    }
+  }, []);
 
   // WebView ref를 한 번만 선언하고 모든 훅에서 공유
   const webViewRef = React.useRef<WebView | null>(null);
@@ -92,6 +120,15 @@ function AppContent() {
 
   return (
     <View style={[styles.container, { paddingBottom: insets.bottom }]}>
+      {/* 강제 업데이트 화면 - 최상단 레이어 */}
+      {forceUpdateRequired && (
+        <ForceUpdateScreen
+          message={updateMessage}
+          storeUrl={storeUrl}
+          onUpdatePress={onUpdatePress}
+        />
+      )}
+
       {/* WebView 컨테이너 - 백그라운드에서 프리로딩 */}
       <WebViewContainer
         webViewRef={webViewRef}
@@ -112,13 +149,15 @@ function AppContent() {
   );
 }
 
-export default function App() {
+function App() {
   return (
     <SafeAreaProvider>
       <AppContent />
     </SafeAreaProvider>
   );
 }
+
+export default Sentry.wrap(App);
 
 const styles = StyleSheet.create({
   container: {
