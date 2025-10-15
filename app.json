@@ -29,6 +29,14 @@
           }
         }
       ],
+      [
+        "sentry-expo",
+        {
+          "dsn": "https://4fde45e54533ab79b9a06e91f7ba1673@o4510191631466496.ingest.de.sentry.io/4510191648243792",
+          "enableInExpoDevelopment": true,
+          "debug": true
+        }
+      ],
       "./plugins/withKeystoreConfig",
       "./plugins/withIOSVersion",
       "./plugins/withAndroidCleartextTraffic",
