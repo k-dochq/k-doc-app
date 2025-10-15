@@ -41,17 +41,19 @@ function AppContent() {
     onFadeOutEnd: unload,
   });
 
-  // 앱 시작 시 사운드 프리로드
+  // 앱 시작 시 사운드 프리로드 및 재생
   React.useEffect(() => {
-    preload();
-  }, [preload]);
+    const initializeSound = async () => {
+      await preload();
 
-  // 스플래시가 처음 보여질 때 사운드 재생
-  React.useEffect(() => {
-    if (showSplash) {
-      playOnce();
-    }
-  }, [showSplash, playOnce]);
+      // 스플래시가 표시되면 즉시 재생
+      if (showSplash) {
+        await playOnce();
+      }
+    };
+
+    initializeSound();
+  }, [preload, playOnce, showSplash]);
 
   // WebView ref를 한 번만 선언하고 모든 훅에서 공유
   const webViewRef = React.useRef<WebView | null>(null);
