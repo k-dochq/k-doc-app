@@ -16,10 +16,3 @@ export const DEEP_LINK_CONFIG = {
   callbackPath: "/auth/callback",
   redirectUri: "kdoc://auth/callback",
 } as const;
-
-// Sentry 설정
-export const SENTRY_CONFIG = {
-  dsn: "https://4fde45e54533ab79b9a06e91f7ba1673@o4510191631466496.ingest.de.sentry.io/4510191648243792",
-  enableInExpoDevelopment: true,
-  debug: true,
-} as const;

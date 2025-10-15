@@ -5,8 +5,6 @@ import {
   useSafeAreaInsets,
 } from "react-native-safe-area-context";
 import { WebView, WebViewMessageEvent } from "react-native-webview";
-import * as Sentry from "sentry-expo";
-import { SENTRY_CONFIG } from "./constants/config";
 import {
   usePushNotifications,
   useWebViewMessageHandler,
@@ -27,13 +25,6 @@ import {
   ForceUpdateScreen,
   useForceUpdateCheck,
 } from "./features/version-check";
-
-// Sentry 초기화
-Sentry.init({
-  dsn: SENTRY_CONFIG.dsn,
-  enableInExpoDevelopment: SENTRY_CONFIG.enableInExpoDevelopment,
-  debug: SENTRY_CONFIG.debug,
-});
 
 function AppContent() {
   const insets = useSafeAreaInsets();
@@ -140,11 +131,9 @@ function AppContent() {
 
 export default function App() {
   return (
-    <Sentry.Native.ErrorBoundary fallback={<View style={styles.container} />}>
-      <SafeAreaProvider>
-        <AppContent />
-      </SafeAreaProvider>
-    </Sentry.Native.ErrorBoundary>
+    <SafeAreaProvider>
+      <AppContent />
+    </SafeAreaProvider>
   );
 }
 
