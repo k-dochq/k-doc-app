@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-const MINIMUM_SPLASH_DURATION = 2000;
+const MINIMUM_SPLASH_DURATION = 1500;
 
 export function useSplashTimer() {
   const [minTimeElapsed, setMinTimeElapsed] = useState(false);

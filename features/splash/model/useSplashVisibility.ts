@@ -4,11 +4,13 @@ import { Animated } from "react-native";
 interface UseSplashVisibilityProps {
   minTimeElapsed: boolean;
   isWebViewReady: boolean;
+  onFadeOutEnd?: () => void;
 }
 
 export function useSplashVisibility({
   minTimeElapsed,
   isWebViewReady,
+  onFadeOutEnd,
 }: UseSplashVisibilityProps) {
   const [showSplash, setShowSplash] = useState(true);
   const fadeAnim = useRef(new Animated.Value(1)).current;
@@ -22,6 +24,7 @@ export function useSplashVisibility({
         useNativeDriver: true,
       }).start(() => {
         setShowSplash(false);
+        onFadeOutEnd?.();
       });
     }
   }, [minTimeElapsed, isWebViewReady, fadeAnim]);

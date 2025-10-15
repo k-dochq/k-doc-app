@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, View } from "react-native";
+import { Alert, StyleSheet, View } from "react-native";
 import {
   SafeAreaProvider,
   useSafeAreaInsets,
@@ -17,6 +17,7 @@ import { useSocialLogin } from "./features/social-login";
 import {
   useSplashTimer,
   useSplashVisibility,
+  useSplashSound,
   SplashScreen,
 } from "./features/splash";
 import { WebViewContainer } from "./features/webview";
@@ -24,16 +25,33 @@ import { WebViewContainer } from "./features/webview";
 function AppContent() {
   const insets = useSafeAreaInsets();
 
+  // 스플래시 타이머 (3초 최소 시간)
   const { minTimeElapsed } = useSplashTimer();
 
   // WebView 상태 관리 (로딩 완료 여부)
   const [isWebViewReady, setIsWebViewReady] = React.useState(false);
 
+  // 스플래시 사운드 관리
+  const { preload, playOnce, unload } = useSplashSound();
+
   // 스플래시 표시 여부 및 페이드 애니메이션
   const { showSplash, fadeAnim } = useSplashVisibility({
     minTimeElapsed,
     isWebViewReady,
+    onFadeOutEnd: unload,
   });
+
+  // 앱 시작 시 사운드 프리로드
+  React.useEffect(() => {
+    preload();
+  }, [preload]);
+
+  // 스플래시가 처음 보여질 때 사운드 재생
+  React.useEffect(() => {
+    if (showSplash) {
+      playOnce();
+    }
+  }, [showSplash, playOnce]);
 
   // WebView ref를 한 번만 선언하고 모든 훅에서 공유
   const webViewRef = React.useRef<WebView | null>(null);
