@@ -12,7 +12,9 @@
       "resizeMode": "cover",
       "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "plugins": [
       [
         "expo-splash-screen",
@@ -42,7 +44,8 @@
       "./plugins/withAndroidCleartextTraffic",
       "./plugins/withIOSTeam",
       "expo-asset",
-      "expo-secure-store"
+      "expo-secure-store",
+      "react-native-appsflyer"
     ],
     "scheme": "kdoc",
     "ios": {
@@ -52,7 +55,8 @@
       "supportsTablet": true,
       "teamId": "3LC3JLW6J5",
       "infoPlist": {
-        "ITSAppUsesNonExemptEncryption": false
+        "ITSAppUsesNonExemptEncryption": false,
+        "NSUserTrackingUsageDescription": "맞춤형 마케팅과 앱 성능 분석을 위해 기기 식별자를 사용합니다."
       }
     },
     "android": {
@@ -74,6 +78,10 @@
     "extra": {
       "eas": {
         "projectId": "e8d1a981-a5cf-46d7-a157-c3dc719f12bc"
+      },
+      "appsFlyer": {
+        "devKey": "tjf3bfias5hyxjZ8ouBoYi",
+        "iosAppId": "6502036150"
       }
     }
   }
