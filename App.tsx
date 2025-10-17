@@ -26,6 +26,7 @@ import {
   ForceUpdateScreen,
   useForceUpdateCheck,
 } from "./features/version-check";
+import { initAppsFlyer } from "./libs/appsflyer";
 
 // Sentry 초기화
 Sentry.init({
@@ -61,28 +62,6 @@ function AppContent() {
     onFadeOutEnd: unload,
   });
 
-  // 앱 시작 시 사운드 프리로드 및 재생
-  React.useEffect(() => {
-    const initializeSound = async () => {
-      await preload();
-
-      // 스플래시가 표시되면 즉시 재생
-      if (showSplash) {
-        await playOnce();
-      }
-    };
-
-    initializeSound();
-  }, [preload, playOnce, showSplash]);
-
-  // Sentry 테스트 (개발 환경에서만)
-  React.useEffect(() => {
-    if (__DEV__) {
-      console.log("Sentry 초기화 완료 - 테스트 에러 전송");
-      Sentry.captureException(new Error("Sentry 테스트 에러입니다"));
-    }
-  }, []);
-
   // WebView ref를 한 번만 선언하고 모든 훅에서 공유
   const webViewRef = React.useRef<WebView | null>(null);
 
@@ -117,6 +96,36 @@ function AppContent() {
 
   // 로딩 인디케이터 표시 여부 (3초 이상 걸릴 경우)
   const showLoadingIndicator = minTimeElapsed && !isWebViewReady;
+
+  // ===== useEffect 모음 =====
+
+  // 앱스플라이어 초기화
+  React.useEffect(() => {
+    const initializeAppsFlyer = async () => {
+      try {
+        await initAppsFlyer();
+        console.log("✅ AppsFlyer initialized successfully");
+      } catch (error) {
+        console.error("❌ AppsFlyer initialization failed:", error);
+      }
+    };
+
+    initializeAppsFlyer();
+  }, []);
+
+  // 앱 시작 시 사운드 프리로드 및 재생
+  React.useEffect(() => {
+    const initializeSound = async () => {
+      await preload();
+
+      // 스플래시가 표시되면 즉시 재생
+      if (showSplash) {
+        await playOnce();
+      }
+    };
+
+    initializeSound();
+  }, [preload, playOnce, showSplash]);
 
   return (
     <View style={[styles.container, { paddingBottom: insets.bottom }]}>

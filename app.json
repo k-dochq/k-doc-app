@@ -2,7 +2,7 @@
   "expo": {
     "name": "K-DOC",
     "slug": "k-doc-app",
-    "version": "1.5.005",
+    "version": "1.5.006",
     "orientation": "portrait",
     "icon": "./assets/app-icon.png",
     "userInterfaceStyle": "light",
@@ -42,23 +42,25 @@
       "./plugins/withAndroidCleartextTraffic",
       "./plugins/withIOSTeam",
       "expo-asset",
-      "expo-secure-store"
+      "expo-secure-store",
+      "react-native-appsflyer"
     ],
     "scheme": "kdoc",
     "ios": {
       "bundleIdentifier": "io.drmiracle.app",
-      "buildNumber": "1.5.005",
-      "version": "1.5.005",
+      "buildNumber": "1.5.006",
+      "version": "1.5.0061",
       "supportsTablet": true,
       "teamId": "3LC3JLW6J5",
       "infoPlist": {
-        "ITSAppUsesNonExemptEncryption": false
+        "ITSAppUsesNonExemptEncryption": false,
+        "NSUserTrackingUsageDescription": "맞춤형 마케팅과 앱 성능 분석을 위해 기기 식별자를 사용합니다."
       }
     },
     "android": {
       "package": "io.drmiracle.app",
-      "versionCode": 45,
-      "versionName": "1.5.005",
+      "versionCode": 49,
+      "versionName": "1.5.006",
       "googleServicesFile": "./google-services.json",
       "adaptiveIcon": {
         "foregroundImage": "./assets/app-icon.png",
@@ -74,6 +76,10 @@
     "extra": {
       "eas": {
         "projectId": "e8d1a981-a5cf-46d7-a157-c3dc719f12bc"
+      },
+      "appsFlyer": {
+        "devKey": "tjf3bfias5hyxjZ8ouBoYi",
+        "iosAppId": "6502036150"
       }
     }
   }
