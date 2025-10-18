@@ -27,6 +27,7 @@ import {
   useForceUpdateCheck,
 } from "./features/version-check";
 import { initAppsFlyer } from "./libs/appsflyer";
+import { useATTGate } from "./features/privacy/useATTGate";
 
 // Sentry 초기화
 Sentry.init({
@@ -99,19 +100,15 @@ function AppContent() {
 
   // ===== useEffect 모음 =====
 
-  // 앱스플라이어 초기화
-  React.useEffect(() => {
-    const initializeAppsFlyer = async () => {
-      try {
-        await initAppsFlyer();
-        console.log("✅ AppsFlyer initialized successfully");
-      } catch (error) {
-        console.error("❌ AppsFlyer initialization failed:", error);
-      }
-    };
-
-    initializeAppsFlyer();
-  }, []);
+  // ATT 허용 시에만 AppsFlyer 초기화 (추적 SDK는 모두 여기로 모으기)
+  useATTGate(async () => {
+    try {
+      await initAppsFlyer(); // <- 여기서만 추적 SDK init
+      console.log("✅ AppsFlyer initialized after ATT grant");
+    } catch (error) {
+      console.error("❌ AppsFlyer init failed:", error);
+    }
+  });
 
   // 앱 시작 시 사운드 프리로드 및 재생
   React.useEffect(() => {

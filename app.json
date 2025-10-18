@@ -2,7 +2,7 @@
   "expo": {
     "name": "K-DOC",
     "slug": "k-doc-app",
-    "version": "1.5.006",
+    "version": "1.5.007",
     "orientation": "portrait",
     "icon": "./assets/app-icon.png",
     "userInterfaceStyle": "light",
@@ -43,13 +43,14 @@
       "./plugins/withIOSTeam",
       "expo-asset",
       "expo-secure-store",
-      "react-native-appsflyer"
+      "react-native-appsflyer",
+      "expo-tracking-transparency"
     ],
     "scheme": "kdoc",
     "ios": {
       "bundleIdentifier": "io.drmiracle.app",
-      "buildNumber": "1.5.006",
-      "version": "1.5.0061",
+      "buildNumber": "1.5.007",
+      "version": "1.5.007",
       "supportsTablet": true,
       "teamId": "3LC3JLW6J5",
       "infoPlist": {
@@ -59,8 +60,8 @@
     },
     "android": {
       "package": "io.drmiracle.app",
-      "versionCode": 49,
-      "versionName": "1.5.006",
+      "versionCode": 50,
+      "versionName": "1.5.007",
       "googleServicesFile": "./google-services.json",
       "adaptiveIcon": {
         "foregroundImage": "./assets/app-icon.png",
