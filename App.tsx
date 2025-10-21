@@ -7,7 +7,7 @@ import {
 import { WebView, WebViewMessageEvent } from "react-native-webview";
 import * as Sentry from "@sentry/react-native";
 import {
-  usePushNotifications,
+  useAppInitialization,
   useWebViewMessageHandler,
   useWebViewShareHandler,
   useUserDebug,
@@ -27,7 +27,6 @@ import {
   useForceUpdateCheck,
 } from "./features/version-check";
 import { initAppsFlyer } from "./libs/appsflyer";
-import { useATTGate } from "./features/privacy/useATTGate";
 
 // Sentry 초기화
 Sentry.init({
@@ -69,8 +68,8 @@ function AppContent() {
   // 알림으로부터 초기 URL 결정
   const initialUrl = useInitialUrlFromNotification(WEBVIEW_URL);
 
-  // 푸시 알림 기능 (토큰 가져오기 및 서버 등록)
-  usePushNotifications(webViewRef);
+  // 앱 초기화 (ATT → AppsFlyer → 푸시 알림 순차 실행)
+  useAppInitialization(webViewRef);
 
   // 소셜로그인 기능
   const { handleWebViewMessage: handleSocialLoginMessage } =
@@ -99,16 +98,6 @@ function AppContent() {
   const showLoadingIndicator = minTimeElapsed && !isWebViewReady;
 
   // ===== useEffect 모음 =====
-
-  // ATT 허용 시에만 AppsFlyer 초기화 (추적 SDK는 모두 여기로 모으기)
-  useATTGate(async () => {
-    try {
-      await initAppsFlyer(); // <- 여기서만 추적 SDK init
-      console.log("✅ AppsFlyer initialized after ATT grant");
-    } catch (error) {
-      console.error("❌ AppsFlyer init failed:", error);
-    }
-  });
 
   // 앱 시작 시 사운드 프리로드 및 재생
   React.useEffect(() => {
