@@ -18,7 +18,7 @@ import { useSocialLogin } from "./features/social-login";
 import {
   useSplashTimer,
   useSplashVisibility,
-  useSplashSound,
+  // useSplashSound,
   SplashScreen,
 } from "./features/splash";
 import { WebViewContainer } from "./features/webview";
@@ -53,13 +53,13 @@ function AppContent() {
   const [isWebViewReady, setIsWebViewReady] = React.useState(false);
 
   // 스플래시 사운드 관리
-  const { preload, playOnce, unload } = useSplashSound();
+  // const { preload, playOnce, unload } = useSplashSound();
 
   // 스플래시 표시 여부 및 페이드 애니메이션
   const { showSplash, fadeAnim } = useSplashVisibility({
     minTimeElapsed,
     isWebViewReady,
-    onFadeOutEnd: unload,
+    // onFadeOutEnd: unload,
   });
 
   // WebView ref를 한 번만 선언하고 모든 훅에서 공유
@@ -100,18 +100,18 @@ function AppContent() {
   // ===== useEffect 모음 =====
 
   // 앱 시작 시 사운드 프리로드 및 재생
-  React.useEffect(() => {
-    const initializeSound = async () => {
-      await preload();
+  // React.useEffect(() => {
+  //   const initializeSound = async () => {
+  //     await preload();
 
-      // 스플래시가 표시되면 즉시 재생
-      if (showSplash) {
-        await playOnce();
-      }
-    };
+  //     // 스플래시가 표시되면 즉시 재생
+  //     if (showSplash) {
+  //       await playOnce();
+  //     }
+  //   };
 
-    initializeSound();
-  }, [preload, playOnce, showSplash]);
+  //   initializeSound();
+  // }, [preload, playOnce, showSplash]);
 
   return (
     <View style={[styles.container, { paddingBottom: insets.bottom }]}>
