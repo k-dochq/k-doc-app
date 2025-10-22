@@ -15,12 +15,15 @@ Notifications.setNotificationHandler({
   }),
 });
 
-export function usePushNotifications(
+// 독립 함수: 푸시 토큰 등록
+export async function registerPushToken(
   webViewRef: React.RefObject<WebView | null>
 ) {
-  useEffect(() => {
+  try {
+    console.log("🔔 Registering push token...");
+
     // 푸시 토큰 가져오기 및 등록 실행
-    getAndRegisterPushToken();
+    await getAndRegisterPushToken();
 
     // 알림 수신 리스너
     const notificationReceivedSubscription =
@@ -34,10 +37,23 @@ export function usePushNotifications(
         createNotificationClickHandler(webViewRef)
       );
 
-    // 정리 함수
+    console.log("✅ Push notifications initialized");
+
+    // 정리 함수 반환 (필요시 사용)
     return () => {
       notificationReceivedSubscription.remove();
       notificationResponseSubscription.remove();
     };
+  } catch (error) {
+    console.error("❌ Push notification registration failed:", error);
+  }
+}
+
+// 기존 훅 (하위 호환성 유지)
+export function usePushNotifications(
+  webViewRef: React.RefObject<WebView | null>
+) {
+  useEffect(() => {
+    registerPushToken(webViewRef);
   }, [webViewRef]);
 }
