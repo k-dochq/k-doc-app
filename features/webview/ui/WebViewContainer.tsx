@@ -1,5 +1,5 @@
 import React from "react";
-import { View, StyleSheet, Platform } from "react-native";
+import { View, StyleSheet, Platform, Animated } from "react-native";
 import { WebView, WebViewMessageEvent } from "react-native-webview";
 import Constants from "expo-constants";
 import { StatusBar } from "expo-status-bar";
@@ -10,24 +10,41 @@ import { useWebViewState } from "../model/useWebViewState";
 interface WebViewContainerProps {
   webViewRef: React.RefObject<WebView | null>;
   onMessage: (event: WebViewMessageEvent) => void;
+  showSplash: boolean;
+  onLoadEnd: () => void;
   initialUrl: string;
 }
 
 export function WebViewContainer({
   webViewRef,
   onMessage,
+  showSplash,
+  onLoadEnd,
   initialUrl,
 }: WebViewContainerProps) {
   const { setWebViewReady } = useWebViewState();
+  const webViewFadeAnim = React.useRef(new Animated.Value(0)).current; // 웹뷰 페이드인 애니메이션
 
   const { handleNavigationStateChange } = useWebViewBackHandler(webViewRef);
 
   const handleLoadEnd = () => {
     setWebViewReady();
+    onLoadEnd();
   };
 
+  // 스플래시가 사라지기 시작하면 웹뷰 페이드인 시작
+  React.useEffect(() => {
+    if (!showSplash) {
+      Animated.timing(webViewFadeAnim, {
+        toValue: 1,
+        duration: 1000, // 스플래시 페이드아웃과 동일한 시간
+        useNativeDriver: true,
+      }).start();
+    }
+  }, [showSplash, webViewFadeAnim]);
+
   return (
-    <View style={styles.container}>
+    <Animated.View style={[styles.container, { opacity: webViewFadeAnim }]}>
       <StatusBar style="auto" backgroundColor="#FFD9FB" translucent={false} />
       <View
         style={[
@@ -58,7 +75,7 @@ export function WebViewContainer({
         cacheMode="LOAD_CACHE_ELSE_NETWORK"
         incognito={false}
       />
-    </View>
+    </Animated.View>
   );
 }
 
