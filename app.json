@@ -10,22 +10,26 @@
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "cover",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#DA47EF"
     },
     "assetBundlePatterns": ["**/*"],
     "plugins": [
       [
         "expo-splash-screen",
         {
-          "backgroundColor": "#FFDBF9",
+          "backgroundColor": "#DA47EF",
           "image": "./assets/splash.png",
+          "imageWidth": 200,
+          "resizeMode": "contain",
           "android": {
             "image": "./assets/splash.png",
-            "resizeMode": "contain"
+            "resizeMode": "contain",
+            "backgroundColor": "#DA47EF"
           },
           "ios": {
             "image": "./assets/splash.png",
-            "resizeMode": "cover"
+            "resizeMode": "contain",
+            "backgroundColor": "#DA47EF"
           }
         }
       ],
@@ -64,7 +68,11 @@
       "versionName": "1.5.6101",
       "googleServicesFile": "./google-services.json",
       "edgeToEdgeEnabled": true,
-      "predictiveBackGestureEnabled": false
+      "predictiveBackGestureEnabled": false,
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#DA47EF"
+      }
     },
     "web": {
       "favicon": "./assets/favicon.png"

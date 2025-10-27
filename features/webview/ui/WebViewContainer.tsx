@@ -1,7 +1,8 @@
 import React from "react";
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, Platform } from "react-native";
 import { WebView, WebViewMessageEvent } from "react-native-webview";
 import Constants from "expo-constants";
+import { StatusBar } from "expo-status-bar";
 import { handleShouldStartLoadWithRequest } from "../../../shared/lib";
 import { useWebViewBackHandler } from "../../../shared/hooks";
 import { useWebViewState } from "../model/useWebViewState";
@@ -27,6 +28,13 @@ export function WebViewContainer({
 
   return (
     <View style={styles.container}>
+      <StatusBar style="auto" backgroundColor="#FFD9FB" translucent={false} />
+      <View
+        style={[
+          styles.statusBarBackground,
+          { height: Constants.statusBarHeight },
+        ]}
+      />
       <WebView
         ref={webViewRef}
         style={styles.webview}
@@ -57,9 +65,16 @@ export function WebViewContainer({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: Constants.statusBarHeight,
+  },
+  statusBarBackground: {
+    backgroundColor: "#FFD9FB",
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
   },
   webview: {
     flex: 1,
+    marginTop: Constants.statusBarHeight,
   },
 });
