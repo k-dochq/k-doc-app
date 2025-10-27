@@ -1,7 +1,8 @@
-import React, { useRef, useEffect } from "react";
-import { View, StyleSheet, Animated } from "react-native";
+import React from "react";
+import { View, StyleSheet, Platform, Animated } from "react-native";
 import { WebView, WebViewMessageEvent } from "react-native-webview";
 import Constants from "expo-constants";
+import { StatusBar } from "expo-status-bar";
 import { handleShouldStartLoadWithRequest } from "../../../shared/lib";
 import { useWebViewBackHandler } from "../../../shared/hooks";
 import { useWebViewState } from "../model/useWebViewState";
@@ -22,7 +23,7 @@ export function WebViewContainer({
   initialUrl,
 }: WebViewContainerProps) {
   const { setWebViewReady } = useWebViewState();
-  const webViewFadeAnim = useRef(new Animated.Value(0)).current; // 웹뷰 페이드인 애니메이션
+  const webViewFadeAnim = React.useRef(new Animated.Value(0)).current; // 웹뷰 페이드인 애니메이션
 
   const { handleNavigationStateChange } = useWebViewBackHandler(webViewRef);
 
@@ -32,7 +33,7 @@ export function WebViewContainer({
   };
 
   // 스플래시가 사라지기 시작하면 웹뷰 페이드인 시작
-  useEffect(() => {
+  React.useEffect(() => {
     if (!showSplash) {
       Animated.timing(webViewFadeAnim, {
         toValue: 1,
@@ -44,6 +45,13 @@ export function WebViewContainer({
 
   return (
     <Animated.View style={[styles.container, { opacity: webViewFadeAnim }]}>
+      <StatusBar style="auto" backgroundColor="#FFD9FB" translucent={false} />
+      <View
+        style={[
+          styles.statusBarBackground,
+          { height: Constants.statusBarHeight },
+        ]}
+      />
       <WebView
         ref={webViewRef}
         style={styles.webview}
@@ -74,9 +82,16 @@ export function WebViewContainer({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: Constants.statusBarHeight,
+  },
+  statusBarBackground: {
+    backgroundColor: "#FFD9FB",
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
   },
   webview: {
     flex: 1,
+    marginTop: Constants.statusBarHeight,
   },
 });

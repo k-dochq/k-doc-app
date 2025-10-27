@@ -1,5 +1,5 @@
 import React from "react";
-import { Alert, StyleSheet, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import {
   SafeAreaProvider,
   useSafeAreaInsets,
@@ -10,7 +10,6 @@ import {
   useAppInitialization,
   useWebViewMessageHandler,
   useWebViewShareHandler,
-  useUserDebug,
   useInitialUrlFromNotification,
 } from "./shared/hooks";
 import { WEBVIEW_URL } from "./constants/urls";
@@ -18,7 +17,7 @@ import { useSocialLogin } from "./features/social-login";
 import {
   useSplashTimer,
   useSplashVisibility,
-  // useSplashSound,
+  useSplashSound,
   SplashScreen,
 } from "./features/splash";
 import { WebViewContainer } from "./features/webview";
@@ -26,7 +25,6 @@ import {
   ForceUpdateScreen,
   useForceUpdateCheck,
 } from "./features/version-check";
-import { initAppsFlyer } from "./libs/appsflyer";
 
 // Sentry 초기화
 Sentry.init({
@@ -46,7 +44,7 @@ function AppContent() {
   const { forceUpdateRequired, updateMessage, storeUrl, onUpdatePress } =
     useForceUpdateCheck();
 
-  // 스플래시 타이머 (3초 최소 시간)
+  // 스플래시 타이머 (1.5초 최소 시간)
   const { minTimeElapsed } = useSplashTimer();
 
   // WebView 상태 관리 (로딩 완료 여부)
@@ -96,22 +94,6 @@ function AppContent() {
 
   // 로딩 인디케이터 표시 여부 (3초 이상 걸릴 경우)
   const showLoadingIndicator = minTimeElapsed && !isWebViewReady;
-
-  // ===== useEffect 모음 =====
-
-  // 앱 시작 시 사운드 프리로드 및 재생
-  // React.useEffect(() => {
-  //   const initializeSound = async () => {
-  //     await preload();
-
-  //     // 스플래시가 표시되면 즉시 재생
-  //     if (showSplash) {
-  //       await playOnce();
-  //     }
-  //   };
-
-  //   initializeSound();
-  // }, [preload, playOnce, showSplash]);
 
   return (
     <View style={[styles.container, { paddingBottom: insets.bottom }]}>
