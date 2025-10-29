@@ -16,7 +16,7 @@ export function SplashScreen({
       <ImageBackground
         source={require("../../../assets/images/splash.png")}
         style={styles.imageBackground}
-        resizeMode="cover"
+        resizeMode="contain"
       />
       {showLoadingIndicator && (
         <View style={styles.loadingOverlay}>
@@ -30,9 +30,10 @@ export function SplashScreen({
 const styles = StyleSheet.create({
   container: {
     ...StyleSheet.absoluteFillObject,
+    justifyContent: "center",
+    alignItems: "center",
   },
   imageBackground: {
-    flex: 1,
     width: "100%",
     height: "100%",
   },

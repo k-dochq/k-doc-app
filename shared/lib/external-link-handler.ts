@@ -17,6 +17,8 @@ const INTERNAL_DOMAINS = [
   "k-doc.kr",
   "192.168.50.135:3000",
   "https://www.youtube.com",
+  "accounts.google.com", // Google OAuth
+  "supabase.co", // Supabase OAuth callback
 ];
 
 /**

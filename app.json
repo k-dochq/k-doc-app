@@ -2,7 +2,7 @@
   "expo": {
     "name": "K-DOC",
     "slug": "k-doc-app",
-    "version": "1.5.6103",
+    "version": "1.5.6104",
     "orientation": "portrait",
     "icon": "./assets/app-icon.png",
     "userInterfaceStyle": "light",
@@ -12,7 +12,9 @@
       "resizeMode": "cover",
       "backgroundColor": "#DA47EF"
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "plugins": [
       [
         "expo-splash-screen",
@@ -22,11 +24,6 @@
           "imageWidth": 200,
           "resizeMode": "contain",
           "android": {
-            "image": "./assets/splash.png",
-            "resizeMode": "contain",
-            "backgroundColor": "#DA47EF"
-          },
-          "ios": {
             "image": "./assets/splash.png",
             "resizeMode": "contain",
             "backgroundColor": "#DA47EF"
@@ -48,13 +45,14 @@
       "expo-asset",
       "expo-secure-store",
       "react-native-appsflyer",
-      "expo-tracking-transparency"
+      "expo-tracking-transparency",
+      "expo-web-browser"
     ],
     "scheme": "kdoc",
     "ios": {
       "bundleIdentifier": "io.drmiracle.app",
-      "buildNumber": "60",
-      "version": "1.5.6103",
+      "buildNumber": "63",
+      "version": "1.5.6104",
       "supportsTablet": true,
       "teamId": "3LC3JLW6J5",
       "infoPlist": {
@@ -64,8 +62,8 @@
     },
     "android": {
       "package": "io.drmiracle.app",
-      "versionCode": 52,
-      "versionName": "1.5.6103",
+      "versionCode": 61,
+      "versionName": "1.5.6104",
       "googleServicesFile": "./google-services.json",
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false,
