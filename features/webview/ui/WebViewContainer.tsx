@@ -13,6 +13,7 @@ interface WebViewContainerProps {
   showSplash: boolean;
   onLoadEnd: () => void;
   initialUrl: string;
+  onInterceptChatRoute?: (id: string) => void;
 }
 
 export function WebViewContainer({
@@ -21,6 +22,7 @@ export function WebViewContainer({
   showSplash,
   onLoadEnd,
   initialUrl,
+  onInterceptChatRoute,
 }: WebViewContainerProps) {
   const { setWebViewReady } = useWebViewState();
   const webViewFadeAnim = React.useRef(new Animated.Value(0)).current; // 웹뷰 페이드인 애니메이션
@@ -58,7 +60,27 @@ export function WebViewContainer({
         source={{ uri: initialUrl }}
         onNavigationStateChange={handleNavigationStateChange}
         onLoadEnd={handleLoadEnd}
-        onShouldStartLoadWithRequest={handleShouldStartLoadWithRequest}
+        removeClippedSubviews={true}
+        onShouldStartLoadWithRequest={(req) => {
+          console.log("req.url", req.url);
+          try {
+            const url = new URL(req.url);
+            const pathname = url.pathname || "";
+            // 로케일 접두어가 있어도 매칭 (예: /en/chat/:id, /ko/chat/:id)
+            const match = pathname.match(
+              /^\/(?:[a-z]{2}\/)?chat\/([0-9a-fA-F-]{36})(?:\/)?$/
+            );
+            if (match && match[1] && onInterceptChatRoute) {
+              console.log("match", match[1]);
+              onInterceptChatRoute(match[1]);
+              return false; // 웹뷰 로드 차단
+            }
+            console.log("match not found");
+          } catch {
+            // URL 파싱 실패 시 기본 핸들러로 위임
+          }
+          return handleShouldStartLoadWithRequest(req);
+        }}
         onMessage={onMessage}
         allowsBackForwardNavigationGestures={true}
         // Pull-to-Refresh 설정
