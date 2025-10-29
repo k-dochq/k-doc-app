@@ -3,7 +3,7 @@
  */
 
 import * as AuthSession from "expo-auth-session";
-import * as Linking from "expo-linking";
+import * as WebBrowser from "expo-web-browser";
 import { Alert } from "react-native";
 import { supabase } from "shared/lib/supabase";
 import type {
@@ -31,6 +31,7 @@ export async function startSocialLogin(
   try {
     const redirectTo = createDeepLinkUri();
 
+    // skipBrowserRedirect는 모두 false로 설정 (시스템 브라우저 사용)
     const { data, error } = await supabase.auth.signInWithOAuth({
       provider,
       options: {
@@ -48,7 +49,8 @@ export async function startSocialLogin(
     }
 
     if (data.url) {
-      await Linking.openURL(data.url);
+      // 시스템 브라우저 사용 (SFSafariViewController/Chrome Custom Tabs)
+      await WebBrowser.openBrowserAsync(data.url);
     }
   } catch (error) {
     Alert.alert(

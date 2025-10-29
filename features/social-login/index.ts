@@ -3,6 +3,7 @@
  */
 
 export { useSocialLogin } from "./model/use-social-login";
+export { SocialLoginModal } from "./ui/SocialLoginModal";
 export {
   startSocialLogin,
   parseWebViewMessage,

@@ -5,6 +5,7 @@
 import { useEffect, useRef } from "react";
 import { WebView, WebViewMessageEvent } from "react-native-webview";
 import { Alert } from "react-native";
+import * as WebBrowser from "expo-web-browser";
 import {
   startSocialLogin,
   parseWebViewMessage,
@@ -35,6 +36,14 @@ export function useSocialLogin(webViewRef: React.RefObject<WebView | null>) {
   useEffect(() => {
     const handleDeepLink = async (params: DeepLinkParams) => {
       if (params.code) {
+        // OAuth 콜백 감지 시 시스템 브라우저 닫기
+        try {
+          await WebBrowser.dismissBrowser();
+        } catch (error) {
+          // 브라우저가 이미 닫혔거나 없으면 에러 무시
+          console.log("브라우저 닫기:", error);
+        }
+
         try {
           const { data, error } = await supabase.auth.exchangeCodeForSession(
             params.code
@@ -131,6 +140,7 @@ export function useSocialLogin(webViewRef: React.RefObject<WebView | null>) {
           redirectPath: message.redirectPath,
         };
 
+        // Provider별 처리 (Google: 시스템 브라우저, Apple: 외부 Safari)
         startSocialLogin(message.provider);
       }
     } catch (error) {
