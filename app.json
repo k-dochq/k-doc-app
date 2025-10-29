@@ -2,7 +2,7 @@
   "expo": {
     "name": "K-DOC",
     "slug": "k-doc-app",
-    "version": "1.5.6104",
+    "version": "1.5.6105",
     "orientation": "portrait",
     "icon": "./assets/app-icon.png",
     "userInterfaceStyle": "light",
@@ -12,9 +12,7 @@
       "resizeMode": "cover",
       "backgroundColor": "#DA47EF"
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "plugins": [
       [
         "expo-splash-screen",
@@ -51,8 +49,8 @@
     "scheme": "kdoc",
     "ios": {
       "bundleIdentifier": "io.drmiracle.app",
-      "buildNumber": "63",
-      "version": "1.5.6104",
+      "buildNumber": "64",
+      "version": "1.5.6105",
       "supportsTablet": true,
       "teamId": "3LC3JLW6J5",
       "infoPlist": {
@@ -62,8 +60,8 @@
     },
     "android": {
       "package": "io.drmiracle.app",
-      "versionCode": 61,
-      "versionName": "1.5.6104",
+      "versionCode": 62,
+      "versionName": "1.5.6105",
       "googleServicesFile": "./google-services.json",
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false,
