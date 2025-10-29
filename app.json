@@ -29,6 +29,15 @@
         }
       ],
       [
+        "expo-build-properties",
+        {
+          "android": {
+            "targetSdkVersion": 35,
+            "compileSdkVersion": 35
+          }
+        }
+      ],
+      [
         "@sentry/react-native/expo",
         {
           "url": "https://sentry.io/",
@@ -49,7 +58,7 @@
     "scheme": "kdoc",
     "ios": {
       "bundleIdentifier": "io.drmiracle.app",
-      "buildNumber": "64",
+      "buildNumber": "65",
       "version": "1.5.6105",
       "supportsTablet": true,
       "teamId": "3LC3JLW6J5",
