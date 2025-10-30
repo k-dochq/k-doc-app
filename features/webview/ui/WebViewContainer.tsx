@@ -60,6 +60,10 @@ export function WebViewContainer({
         onLoadEnd={handleLoadEnd}
         onShouldStartLoadWithRequest={handleShouldStartLoadWithRequest}
         onMessage={onMessage}
+        // iOS: WKWebView 콘텐츠 프로세스 종료 시(화이트 스크린) 복구
+        onContentProcessDidTerminate={() => {
+          webViewRef.current?.reload();
+        }}
         allowsBackForwardNavigationGestures={true}
         // Pull-to-Refresh 설정
         pullToRefreshEnabled={true}
