@@ -6,6 +6,7 @@ import { StatusBar } from "expo-status-bar";
 import { handleShouldStartLoadWithRequest } from "../../../shared/lib";
 import { useWebViewBackHandler } from "../../../shared/hooks";
 import { useWebViewState } from "../model/useWebViewState";
+import RNRestart from "react-native-restart";
 
 interface WebViewContainerProps {
   webViewRef: React.RefObject<WebView | null>;
@@ -24,6 +25,7 @@ export function WebViewContainer({
 }: WebViewContainerProps) {
   const { setWebViewReady } = useWebViewState();
   const webViewFadeAnim = React.useRef(new Animated.Value(0)).current; // 웹뷰 페이드인 애니메이션
+  const hasRestartedRef = React.useRef(false);
 
   const { handleNavigationStateChange } = useWebViewBackHandler(webViewRef);
 
@@ -62,7 +64,15 @@ export function WebViewContainer({
         onMessage={onMessage}
         // iOS: WKWebView 콘텐츠 프로세스 종료 시(화이트 스크린) 복구
         onContentProcessDidTerminate={() => {
-          webViewRef.current?.reload();
+          if (Platform.OS !== "ios") return;
+
+          if (hasRestartedRef.current) return;
+          hasRestartedRef.current = true;
+          try {
+            RNRestart.Restart();
+          } catch (e) {
+            // 의도적으로 폴백 없음 (요구사항: 비 iOS는 무동작, iOS 실패 시에도 무동작)
+          }
         }}
         allowsBackForwardNavigationGestures={true}
         // Pull-to-Refresh 설정
