@@ -1,3 +1,4 @@
+import { Linking } from "react-native";
 import { WebView } from "react-native-webview";
 import * as Notifications from "expo-notifications";
 import type {
@@ -10,12 +11,12 @@ export function useNotificationPermissionHandler(
 ) {
   const handleWebViewMessage = async (event: any) => {
     try {
-      const data: NotificationPermissionRequest = JSON.parse(
-        event.nativeEvent.data
-      );
+      const data = JSON.parse(event.nativeEvent.data);
 
       if (data.type === "NOTIFICATION_PERMISSION_REQUEST") {
         await handleNotificationPermissionRequest(webViewRef);
+      } else if (data.type === "OPEN_NOTIFICATION_SETTINGS_REQUEST") {
+        await handleOpenNotificationSettings();
       }
     } catch (err) {
       console.warn("알림 권한 메시지 파싱 에러:", err);
@@ -87,6 +88,20 @@ export function useNotificationPermissionHandler(
         `;
         webViewRef.current.injectJavaScript(script);
       }
+    }
+  };
+
+  const handleOpenNotificationSettings = async () => {
+    try {
+      console.log("⚙️ 알림 설정 열기 요청 받음");
+
+      // 안드로이드와 iOS 모두에서 알림 설정 화면으로 이동
+      // Linking.openSettings()는 플랫폼에 관계없이 앱 설정 화면으로 이동
+      await Linking.openSettings();
+
+      console.log("✅ 알림 설정 화면 열기 완료");
+    } catch (error) {
+      console.error("알림 설정 열기 중 오류:", error);
     }
   };
 
