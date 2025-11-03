@@ -51,3 +51,21 @@ export interface DeepLinkParams {
   error?: string;
   error_description?: string;
 }
+
+/**
+ * 웹뷰로부터 받는 알림 권한 확인 요청 메시지 타입
+ */
+export interface NotificationPermissionRequest {
+  source: "kdoc-web";
+  type: "NOTIFICATION_PERMISSION_REQUEST";
+}
+
+/**
+ * 웹뷰로 전송할 알림 권한 확인 응답 메시지 타입
+ */
+export interface NotificationPermissionResponse {
+  source: "kdoc-app";
+  type: "NOTIFICATION_PERMISSION_RESPONSE";
+  granted: boolean;
+  status: "granted" | "denied" | "undetermined";
+}
