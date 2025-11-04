@@ -10,6 +10,7 @@ import {
   useAppInitialization,
   useWebViewMessageHandler,
   useWebViewShareHandler,
+  useNotificationPermissionHandler,
   useInitialUrlFromNotification,
 } from "./shared/hooks";
 import { WEBVIEW_URL } from "./constants/urls";
@@ -80,11 +81,16 @@ function AppContent() {
   const { handleWebViewMessage: handleShareMessage } =
     useWebViewShareHandler(webViewRef);
 
+  // 알림 권한 핸들러
+  const { handleWebViewMessage: handleNotificationPermission } =
+    useNotificationPermissionHandler(webViewRef);
+
   // 통합 메시지 핸들러
   const handleCombinedMessage = (event: WebViewMessageEvent) => {
     handleSocialLoginMessage(event);
     handleWebViewMessage(event);
     handleShareMessage(event);
+    handleNotificationPermission(event);
   };
 
   // WebView 로딩 완료 핸들러
