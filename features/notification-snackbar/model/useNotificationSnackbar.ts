@@ -5,17 +5,18 @@ interface NotificationSnackbarState {
   visible: boolean;
   title: string;
   body: string;
+  imageUrl?: string;
   targetUrl?: string;
 }
 
-// const AUTO_DISMISS_DURATION = 5000; // 5초
-const AUTO_DISMISS_DURATION = 5000000000000; // 5초
+const AUTO_DISMISS_DURATION = 3000; // 3초
 
 export function useNotificationSnackbar() {
   const [state, setState] = useState<NotificationSnackbarState>({
     visible: false,
     title: "",
     body: "",
+    imageUrl: undefined,
     targetUrl: undefined,
   });
 
@@ -41,12 +42,15 @@ export function useNotificationSnackbar() {
       const targetUrl = notification.request.content.data?.targetUrl as
         | string
         | undefined;
+      const imageUrl = (notification.request.content.data?.imageUrl ||
+        notification.request.content.data?.image) as string | undefined;
 
       // 스낵바 표시 (최신 알림으로 덮어쓰기)
       setState({
         visible: true,
         title,
         body,
+        imageUrl,
         targetUrl,
       });
 
@@ -76,6 +80,7 @@ export function useNotificationSnackbar() {
     visible: state.visible,
     title: state.title,
     body: state.body,
+    imageUrl: state.imageUrl,
     targetUrl: state.targetUrl,
     showSnackbar,
     hideSnackbar,

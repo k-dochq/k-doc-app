@@ -6,6 +6,7 @@ import {
   StyleSheet,
   Animated,
   Platform,
+  Image,
 } from "react-native";
 import { WebView } from "react-native-webview";
 import { WEBVIEW_URL } from "../../../constants/urls";
@@ -14,6 +15,7 @@ interface NotificationSnackbarProps {
   visible: boolean;
   title: string;
   body: string;
+  imageUrl?: string;
   targetUrl?: string;
   onPress: () => void;
   onDismiss: () => void;
@@ -25,6 +27,7 @@ export function NotificationSnackbar({
   visible,
   title,
   body,
+  imageUrl,
   targetUrl,
   onPress,
   onDismiss,
@@ -82,7 +85,7 @@ export function NotificationSnackbar({
       style={[
         styles.container,
         {
-          top: topInset,
+          top: topInset + 60,
           transform: [{ translateY }],
           opacity,
         },
@@ -95,7 +98,20 @@ export function NotificationSnackbar({
         style={styles.touchable}
       >
         <View style={styles.content}>
-          <Text style={styles.icon}>💬</Text>
+          {/* 왼쪽: 썸네일 이미지 */}
+          {imageUrl ? (
+            <Image
+              source={{ uri: imageUrl }}
+              style={styles.thumbnail}
+              resizeMode="cover"
+            />
+          ) : (
+            <View style={styles.thumbnailPlaceholder}>
+              <Text style={styles.placeholderIcon}>🏥</Text>
+            </View>
+          )}
+
+          {/* 중간: 텍스트 영역 */}
           <View style={styles.textContainer}>
             <Text style={styles.title} numberOfLines={1}>
               {title}
@@ -117,8 +133,6 @@ const styles = StyleSheet.create({
     right: 0,
     zIndex: 1000,
     paddingHorizontal: 16,
-    paddingTop: 8,
-    paddingBottom: 12,
   },
   touchable: {
     width: "100%",
@@ -126,17 +140,9 @@ const styles = StyleSheet.create({
   content: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "#FFD9FB",
+    backgroundColor: "#DEF1FF",
     borderRadius: 12,
     padding: 12,
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
     ...Platform.select({
       ios: {
         borderBottomWidth: 1,
@@ -144,22 +150,39 @@ const styles = StyleSheet.create({
       },
     }),
   },
-  icon: {
-    fontSize: 24,
+  thumbnail: {
+    width: 42,
+    height: 42,
+    borderRadius: 8,
+    backgroundColor: "#f0f0f0",
     marginRight: 12,
+  },
+  thumbnailPlaceholder: {
+    width: 42,
+    height: 42,
+    borderRadius: 8,
+    backgroundColor: "#f0f0f0",
+    justifyContent: "center",
+    alignItems: "center",
+    marginRight: 12,
+  },
+  placeholderIcon: {
+    fontSize: 20,
   },
   textContainer: {
     flex: 1,
   },
   title: {
-    fontSize: 14,
-    fontWeight: "600",
-    color: "#000",
-    marginBottom: 4,
+    fontSize: 12,
+    fontWeight: "500",
+    color: "#737373",
+    lineHeight: 16,
+    marginBottom: 2,
   },
   body: {
-    fontSize: 12,
-    color: "#333",
-    lineHeight: 16,
+    fontSize: 14,
+    fontWeight: "700",
+    color: "#171717",
+    lineHeight: 20,
   },
 });

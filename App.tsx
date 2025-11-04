@@ -77,6 +77,7 @@ function AppContent() {
     visible: snackbarVisible,
     title: snackbarTitle,
     body: snackbarBody,
+    imageUrl: snackbarImageUrl,
     targetUrl: snackbarTargetUrl,
     showSnackbar,
     hideSnackbar,
@@ -140,6 +141,7 @@ function AppContent() {
         visible={snackbarVisible}
         title={snackbarTitle}
         body={snackbarBody}
+        imageUrl={snackbarImageUrl}
         targetUrl={snackbarTargetUrl}
         onPress={() => {}}
         onDismiss={hideSnackbar}
