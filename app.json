@@ -57,7 +57,7 @@
     "scheme": "kdoc",
     "ios": {
       "bundleIdentifier": "io.drmiracle.app",
-      "buildNumber": "69",
+      "buildNumber": "70",
       "version": "1.5.6107",
       "supportsTablet": true,
       "teamId": "3LC3JLW6J5",
