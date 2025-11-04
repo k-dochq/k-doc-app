@@ -26,6 +26,11 @@ import {
   ForceUpdateScreen,
   useForceUpdateCheck,
 } from "./features/version-check";
+import {
+  NotificationSnackbar,
+  useNotificationSnackbar,
+} from "./features/notification-snackbar";
+import { setForegroundNotificationHandler } from "./shared/hooks/usePushNotifications";
 
 // Sentry 초기화
 Sentry.init({
@@ -66,6 +71,24 @@ function AppContent() {
 
   // 알림으로부터 초기 URL 결정
   const initialUrl = useInitialUrlFromNotification(WEBVIEW_URL);
+
+  // 스낵바 상태 관리
+  const {
+    visible: snackbarVisible,
+    title: snackbarTitle,
+    body: snackbarBody,
+    targetUrl: snackbarTargetUrl,
+    showSnackbar,
+    hideSnackbar,
+  } = useNotificationSnackbar();
+
+  // 포그라운드 알림 핸들러 설정
+  React.useEffect(() => {
+    setForegroundNotificationHandler(showSnackbar);
+    return () => {
+      setForegroundNotificationHandler(null);
+    };
+  }, [showSnackbar]);
 
   // 앱 초기화 (ATT → AppsFlyer → 푸시 알림 순차 실행)
   useAppInitialization(webViewRef);
@@ -111,6 +134,18 @@ function AppContent() {
           onUpdatePress={onUpdatePress}
         />
       )}
+
+      {/* 알림 스낵바 - 강제 업데이트 화면 아래, WebView 위 */}
+      <NotificationSnackbar
+        visible={snackbarVisible}
+        title={snackbarTitle}
+        body={snackbarBody}
+        targetUrl={snackbarTargetUrl}
+        onPress={() => {}}
+        onDismiss={hideSnackbar}
+        topInset={insets.top}
+        webViewRef={webViewRef}
+      />
 
       {/* WebView 컨테이너 - 백그라운드에서 프리로딩 */}
       <WebViewContainer
