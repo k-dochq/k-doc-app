@@ -88,6 +88,7 @@ export function WebViewContainer({
         cacheEnabled={true}
         cacheMode="LOAD_CACHE_ELSE_NETWORK"
         incognito={false}
+        decelerationRate={1.3}
       />
     </Animated.View>
   );
