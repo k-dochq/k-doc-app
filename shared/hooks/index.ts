@@ -8,3 +8,4 @@ export { useInitialUrlFromNotification } from "./useInitialUrlFromNotification";
 export { useSession } from "./useSession";
 export { useVersionCheck } from "./useVersionCheck";
 export { useAppInitialization } from "./useAppInitialization";
+export { useDeepLinkHandler } from "./useDeepLinkHandler";

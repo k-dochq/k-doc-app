@@ -12,6 +12,7 @@ import {
   useWebViewShareHandler,
   useNotificationPermissionHandler,
   useInitialUrlFromNotification,
+  useDeepLinkHandler,
 } from "./shared/hooks";
 import { WEBVIEW_URL } from "./constants/urls";
 import { useSocialLogin } from "./features/social-login";
@@ -95,8 +96,14 @@ function AppContent() {
   useAppInitialization(webViewRef);
 
   // 소셜로그인 기능
-  const { handleWebViewMessage: handleSocialLoginMessage } =
+  const { handleWebViewMessage: handleSocialLoginMessage, loginContextRef } =
     useSocialLogin(webViewRef);
+
+  // 딥링크 처리
+  useDeepLinkHandler({
+    webViewRef,
+    loginContext: loginContextRef,
+  });
 
   // 웹뷰 메시지 핸들러 (로그인 성공 등)
   const { handleWebViewMessage } = useWebViewMessageHandler(webViewRef);
