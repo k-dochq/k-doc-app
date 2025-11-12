@@ -50,6 +50,7 @@ export interface DeepLinkParams {
   code?: string;
   error?: string;
   error_description?: string;
+  pathname?: string; // 딥링크 경로 (예: /auth/callback, /payment/return)
 }
 
 /**
