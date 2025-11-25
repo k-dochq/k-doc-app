@@ -2,7 +2,7 @@
   "expo": {
     "name": "K-DOC",
     "slug": "k-doc-app",
-    "version": "1.5.6109",
+    "version": "1.5.6110",
     "orientation": "portrait",
     "icon": "./assets/app-icon.png",
     "userInterfaceStyle": "light",
@@ -57,19 +57,20 @@
     "scheme": "kdoc",
     "ios": {
       "bundleIdentifier": "io.drmiracle.app",
-      "buildNumber": "74",
-      "version": "1.5.6109",
+      "buildNumber": "76",
+      "version": "1.5.6110",
       "supportsTablet": true,
       "teamId": "3LC3JLW6J5",
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false,
-        "NSUserTrackingUsageDescription": "맞춤형 마케팅과 앱 성능 분석을 위해 기기 식별자를 사용합니다."
+        "NSUserTrackingUsageDescription": "맞춤형 마케팅과 앱 성능 분석을 위해 기기 식별자를 사용합니다.",
+        "NSCameraUsageDescription": "채팅에서 사진을 촬영하여 전송하기 위해 카메라 접근 권한이 필요합니다."
       }
     },
     "android": {
       "package": "io.drmiracle.app",
-      "versionCode": 67,
-      "versionName": "1.5.6109",
+      "versionCode": 68,
+      "versionName": "1.5.6110",
       "googleServicesFile": "./google-services.json",
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false,
