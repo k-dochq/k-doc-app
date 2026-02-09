@@ -47,7 +47,7 @@ export function WebViewContainer({
 
   return (
     <Animated.View style={[styles.container, { opacity: webViewFadeAnim }]}>
-      <StatusBar style="auto" backgroundColor="#FFD9FB" translucent={false} />
+      <StatusBar style="auto" backgroundColor="#FFFFFF" translucent={false} />
       <View
         style={[
           styles.statusBarBackground,
@@ -99,7 +99,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   statusBarBackground: {
-    backgroundColor: "#FFD9FB",
+    backgroundColor: "#FFFFFF",
     position: "absolute",
     top: 0,
     left: 0,
