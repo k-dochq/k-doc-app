@@ -11,6 +11,7 @@ interface ShouldStartLoadWithRequestParams {
 
 /**
  * 앱의 내부 도메인 목록
+ * (아이패드 전용 웹뷰 URL 도메인 포함 → 웹뷰 내에서 로드, 외부 브라우저로 열지 않음)
  */
 const INTERNAL_DOMAINS = [
   "172.30.1.100:3000",
@@ -20,6 +21,7 @@ const INTERNAL_DOMAINS = [
   "accounts.google.com", // Google OAuth
   "supabase.co", // Supabase OAuth callback
   "dev.k-doc.kr",
+  "k-q5s0vor37-k-docs-projects.vercel.app", // 아이패드 전용 웹뷰 URL
 ];
 
 /**

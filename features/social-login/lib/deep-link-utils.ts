@@ -2,7 +2,7 @@
  * 딥링크 처리 관련 유틸리티 함수들
  */
 
-import { WEBVIEW_URL } from "constants/urls";
+import { getWebViewBaseUrl } from "shared/lib/getWebViewBaseUrl";
 import * as Linking from "expo-linking";
 import { Alert } from "react-native";
 import { WebView } from "react-native-webview";
@@ -58,7 +58,7 @@ export function parseDeepLinkUrl(url: string): DeepLinkParams | null {
  */
 export function createWebViewCallbackUrl(
   code: string,
-  baseUrl: string = WEBVIEW_URL
+  baseUrl: string = getWebViewBaseUrl()
 ): string {
   return `${baseUrl}/auth/callback?code=${encodeURIComponent(code)}`;
 }
@@ -71,7 +71,7 @@ export function createWebViewSetSessionUrl(
   refreshToken: string,
   locale?: string,
   redirectPath?: string,
-  baseUrl: string = WEBVIEW_URL
+  baseUrl: string = getWebViewBaseUrl()
 ): string {
   const params = new URLSearchParams({
     access_token: accessToken,
@@ -97,7 +97,7 @@ export async function loadCallbackInWebView(
   code: string
 ): Promise<void> {
   try {
-    const callbackUrl = createWebViewCallbackUrl(code);
+    const callbackUrl = createWebViewCallbackUrl(code, getWebViewBaseUrl());
 
     if (webViewRef.current) {
       webViewRef.current.injectJavaScript(
