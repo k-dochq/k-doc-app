@@ -1,7 +1,7 @@
 // pushTokenService.ts
 import { Platform } from "react-native";
 import Constants from "expo-constants";
-import { WEBVIEW_URL } from "../../constants/urls";
+import { getWebViewBaseUrl } from "./getWebViewBaseUrl";
 
 interface PushTokenRegistrationResponse {
   success: boolean;
@@ -22,7 +22,7 @@ export async function registerPushTokenToServer(
   userId: string
 ): Promise<{ success: boolean; error?: string }> {
   try {
-    const res = await fetch(`${WEBVIEW_URL}/api/push/register`, {
+    const res = await fetch(`${getWebViewBaseUrl()}/api/push/register`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({

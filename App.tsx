@@ -14,7 +14,7 @@ import {
   useInitialUrlFromNotification,
   useDeepLinkHandler,
 } from "./shared/hooks";
-import { WEBVIEW_URL } from "./constants/urls";
+import { getWebViewBaseUrl } from "./shared/lib/getWebViewBaseUrl";
 import { useSocialLogin } from "./features/social-login";
 import {
   useSplashTimer,
@@ -71,7 +71,7 @@ function AppContent() {
   const webViewRef = React.useRef<WebView | null>(null);
 
   // 알림으로부터 초기 URL 결정
-  const initialUrl = useInitialUrlFromNotification(WEBVIEW_URL);
+  const initialUrl = useInitialUrlFromNotification(getWebViewBaseUrl());
 
   // 스낵바 상태 관리
   const {

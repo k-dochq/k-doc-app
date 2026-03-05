@@ -9,7 +9,7 @@ import {
   Image,
 } from "react-native";
 import { WebView } from "react-native-webview";
-import { WEBVIEW_URL } from "../../../constants/urls";
+import { getWebViewBaseUrl } from "../../../shared/lib/getWebViewBaseUrl";
 
 interface NotificationSnackbarProps {
   visible: boolean;
@@ -71,7 +71,7 @@ export function NotificationSnackbar({
 
   const handlePress = () => {
     if (targetUrl && webViewRef.current) {
-      const fullUrl = `${WEBVIEW_URL}${encodeURI(targetUrl)}`;
+      const fullUrl = `${getWebViewBaseUrl()}${encodeURI(targetUrl)}`;
       webViewRef.current.injectJavaScript(
         `window.location.href="${fullUrl}";true;`
       );

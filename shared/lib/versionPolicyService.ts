@@ -4,7 +4,7 @@
  */
 
 import { Platform } from "react-native";
-import { WEBVIEW_URL } from "../../constants/urls";
+import { getWebViewBaseUrl } from "./getWebViewBaseUrl";
 
 export interface VersionPolicy {
   minSupportedVersion: string;
@@ -25,7 +25,7 @@ export interface VersionPolicyResponse {
  */
 export async function fetchVersionPolicy(): Promise<VersionPolicyResponse | null> {
   try {
-    const response = await fetch(`${WEBVIEW_URL}/api/version-policy`, {
+    const response = await fetch(`${getWebViewBaseUrl()}/api/version-policy`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
