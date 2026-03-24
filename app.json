@@ -2,7 +2,7 @@
   "expo": {
     "name": "K-DOC",
     "slug": "k-doc-app",
-    "version": "1.5.6115",
+    "version": "1.5.6116",
     "orientation": "portrait",
     "icon": "./assets/app-icon.png",
     "userInterfaceStyle": "light",
@@ -36,14 +36,6 @@
           }
         }
       ],
-      [
-        "@sentry/react-native/expo",
-        {
-          "url": "https://sentry.io/",
-          "project": "react-native",
-          "organization": "k-doc"
-        }
-      ],
       "./plugins/withKeystoreConfig",
       "./plugins/withIOSVersion",
       "./plugins/withAndroidCleartextTraffic",
@@ -57,8 +49,8 @@
     "scheme": "kdoc",
     "ios": {
       "bundleIdentifier": "io.drmiracle.app",
-      "buildNumber": "81",
-      "version": "1.5.6115",
+      "buildNumber": "82",
+      "version": "1.5.6116",
       "supportsTablet": true,
       "teamId": "3LC3JLW6J5",
       "infoPlist": {
@@ -69,8 +61,8 @@
     },
     "android": {
       "package": "io.drmiracle.app",
-      "versionCode": 73,
-      "versionName": "1.5.6115",
+      "versionCode": 74,
+      "versionName": "1.5.6116",
       "googleServicesFile": "./google-services.json",
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false,

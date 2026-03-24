@@ -74,6 +74,8 @@ export function WebViewContainer({
             // 의도적으로 폴백 없음 (요구사항: 비 iOS는 무동작, iOS 실패 시에도 무동작)
           }
         }}
+        allowsInlineMediaPlayback={true}
+        mediaPlaybackRequiresUserAction={false}
         allowsBackForwardNavigationGestures={true}
         // Pull-to-Refresh 설정
         pullToRefreshEnabled={true}

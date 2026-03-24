@@ -1,6 +1,4 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <resources>
-  <color name="splashscreen_background">#DA47EF</color>
-  <color name="iconBackground">#DA47EF</color>
-  <color name="colorPrimary">#023c69</color>
-  <color name="colorPrimaryDark">#DA47EF</color>
+  <color name="splashscreen_background">#FFFFFF</color>
 </resources>
