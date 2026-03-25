@@ -5,9 +5,9 @@ import {
   TouchableOpacity,
   StyleSheet,
   Animated,
-  Platform,
   Image,
 } from "react-native";
+import Svg, { Path } from "react-native-svg";
 import { WebView } from "react-native-webview";
 import { getWebViewBaseUrl } from "../../../shared/lib/getWebViewBaseUrl";
 
@@ -39,7 +39,6 @@ export function NotificationSnackbar({
 
   useEffect(() => {
     if (visible) {
-      // 스낵바 표시 애니메이션 (위에서 아래로 슬라이드 다운)
       Animated.parallel([
         Animated.timing(translateY, {
           toValue: 0,
@@ -53,7 +52,6 @@ export function NotificationSnackbar({
         }),
       ]).start();
     } else {
-      // 스낵바 숨김 애니메이션 (위로 슬라이드 업)
       Animated.parallel([
         Animated.timing(translateY, {
           toValue: -100,
@@ -98,28 +96,37 @@ export function NotificationSnackbar({
         style={styles.touchable}
       >
         <View style={styles.content}>
-          {/* 왼쪽: 썸네일 이미지 */}
-          {imageUrl ? (
-            <Image
-              source={{ uri: imageUrl }}
-              style={styles.thumbnail}
-              resizeMode="cover"
-            />
-          ) : (
-            <View style={styles.thumbnailPlaceholder}>
-              <Text style={styles.placeholderIcon}>🏥</Text>
-            </View>
-          )}
+          {/* 병원 프로필 이미지 */}
+          <View style={styles.profileCircle}>
+            {imageUrl ? (
+              <Image
+                source={{ uri: imageUrl }}
+                style={styles.profileImage}
+                resizeMode="cover"
+              />
+            ) : null}
+          </View>
 
-          {/* 중간: 텍스트 영역 */}
+          {/* 텍스트 */}
           <View style={styles.textContainer}>
-            <Text style={styles.title} numberOfLines={1}>
+            <Text style={styles.hospitalName} numberOfLines={1}>
               {title}
             </Text>
-            <Text style={styles.body} numberOfLines={2}>
+            <Text style={styles.message} numberOfLines={2}>
               {body}
             </Text>
           </View>
+
+          {/* 화살표 */}
+          <Svg width={20} height={20} viewBox="0 0 20 20" fill="none">
+            <Path
+              d="M7.5 4.16406L13.3333 9.9974L7.5 15.8307"
+              stroke="#E5E5E5"
+              strokeWidth={1.5}
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </Svg>
         </View>
       </TouchableOpacity>
     </Animated.View>
@@ -140,49 +147,37 @@ const styles = StyleSheet.create({
   content: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "#DEF1FF",
+    backgroundColor: "#a3a3a3",
     borderRadius: 12,
     padding: 12,
-    ...Platform.select({
-      ios: {
-        borderBottomWidth: 1,
-        borderBottomColor: "rgba(0, 0, 0, 0.1)",
-      },
-    }),
+    gap: 12,
   },
-  thumbnail: {
-    width: 42,
-    height: 42,
-    borderRadius: 8,
-    backgroundColor: "#f0f0f0",
-    marginRight: 12,
+  profileCircle: {
+    width: 46,
+    height: 46,
+    borderRadius: 999,
+    overflow: "hidden",
+    backgroundColor: "#001872",
+    flexShrink: 0,
   },
-  thumbnailPlaceholder: {
-    width: 42,
-    height: 42,
-    borderRadius: 8,
-    backgroundColor: "#f0f0f0",
-    justifyContent: "center",
-    alignItems: "center",
-    marginRight: 12,
-  },
-  placeholderIcon: {
-    fontSize: 20,
+  profileImage: {
+    width: "100%",
+    height: "100%",
   },
   textContainer: {
     flex: 1,
+    minWidth: 0,
   },
-  title: {
-    fontSize: 12,
+  hospitalName: {
+    fontSize: 13,
     fontWeight: "500",
-    color: "#737373",
-    lineHeight: 16,
-    marginBottom: 2,
+    color: "#e5e5e5",
+    lineHeight: 19,
   },
-  body: {
-    fontSize: 14,
-    fontWeight: "700",
-    color: "#171717",
-    lineHeight: 20,
+  message: {
+    fontSize: 16,
+    fontWeight: "600",
+    color: "#ffffff",
+    lineHeight: 24,
   },
 });
