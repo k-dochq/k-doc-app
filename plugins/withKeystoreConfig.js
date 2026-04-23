@@ -1,41 +1,55 @@
+const path = require("path");
 const {
   withGradleProperties,
   withAppBuildGradle,
 } = require("@expo/config-plugins");
 
+require("dotenv").config({
+  path: path.resolve(__dirname, "..", ".env"),
+});
+
+const REQUIRED_ENV = [
+  "ANDROID_KEYSTORE_FILE",
+  "ANDROID_KEY_ALIAS",
+  "ANDROID_KEYSTORE_PASSWORD",
+  "ANDROID_KEY_PASSWORD",
+];
+
 module.exports = function withKeystoreConfig(config) {
-  // 1. Gradle properties 설정
+  const missing = REQUIRED_ENV.filter((key) => !process.env[key]);
+  if (missing.length > 0) {
+    throw new Error(
+      `[withKeystoreConfig] Missing env vars: ${missing.join(", ")}. ` +
+        `Define them in .env at the project root (see .env.example).`
+    );
+  }
+
+  const storeFile = process.env.ANDROID_KEYSTORE_FILE;
+  const keyAlias = process.env.ANDROID_KEY_ALIAS;
+  const storePassword = process.env.ANDROID_KEYSTORE_PASSWORD;
+  const keyPassword = process.env.ANDROID_KEY_PASSWORD;
+
   config = withGradleProperties(config, async (config) => {
     config.modResults.push(
-      {
-        type: "property",
-        key: "MYAPP_UPLOAD_STORE_FILE",
-        value: "../../secret/@jahun135__k-doc-app.jks",
-      },
-      {
-        type: "property",
-        key: "MYAPP_UPLOAD_KEY_ALIAS",
-        value: "da844abdcd9361e8574e2ff931772593",
-      },
+      { type: "property", key: "MYAPP_UPLOAD_STORE_FILE", value: storeFile },
+      { type: "property", key: "MYAPP_UPLOAD_KEY_ALIAS", value: keyAlias },
       {
         type: "property",
         key: "MYAPP_UPLOAD_STORE_PASSWORD",
-        value: "668580ef90a1ed755e8274aae98b6f80",
+        value: storePassword,
       },
       {
         type: "property",
         key: "MYAPP_UPLOAD_KEY_PASSWORD",
-        value: "6f211cd78c5fdfa326eb00f1f6e45d35",
+        value: keyPassword,
       }
     );
     return config;
   });
 
-  // 2. build.gradle 파일의 signingConfigs와 buildTypes 수정
   config = withAppBuildGradle(config, (config) => {
     const modResults = config.modResults;
 
-    // signingConfigs 섹션에 release 설정 추가
     const signingConfigsPattern =
       /(signingConfigs\s*\{[^}]*debug\s*\{[^}]*\}[^}]*)(\})/s;
     const signingConfigsMatch = modResults.contents.match(
@@ -58,7 +72,6 @@ module.exports = function withKeystoreConfig(config) {
       );
     }
 
-    // buildTypes의 release에서 signingConfig를 release로 변경
     const releaseBuildTypePattern =
       /(release\s*\{[^}]*signingConfig\s+)signingConfigs\.debug([^}]*\})/s;
     modResults.contents = modResults.contents.replace(
