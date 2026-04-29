@@ -21,13 +21,16 @@ export function useWebViewShareHandler(
     try {
       const { url } = message;
 
-      // React Native Share API 사용 - message와 url 옵션 모두 사용
-      const shareOptions = {
-        message: url, // 텍스트로 URL 공유
-        url: url, // 링크로 URL 공유
-      };
+      // iOS 와 Android 의 Share.share 동작이 다르다.
+      // iOS 는 message / url 을 *서로 다른 activity item* 으로 전달하므로
+      // 둘 다 채우면 받는 쪽에서 두 개 (텍스트 + 카드) 로 보인다.
+      // 그래서 플랫폼별로 한 슬롯만 사용한다.
+      const shareOptions = Platform.select({
+        ios: { url },
+        default: { message: url },
+      });
 
-      const result = await Share.share(shareOptions);
+      const result = await Share.share(shareOptions!);
 
       if (result.action === Share.sharedAction) {
         console.log("✅ 공유 완료:", { url, platform: Platform.OS });

@@ -2,7 +2,7 @@
   "expo": {
     "name": "K-DOC",
     "slug": "k-doc-app",
-    "version": "1.5.6120",
+    "version": "1.5.6121",
     "orientation": "portrait",
     "icon": "./assets/app-icon.png",
     "userInterfaceStyle": "light",
@@ -49,8 +49,8 @@
     "scheme": "kdoc",
     "ios": {
       "bundleIdentifier": "io.drmiracle.app",
-      "buildNumber": "87",
-      "version": "1.5.6120",
+      "buildNumber": "88",
+      "version": "1.5.6121",
       "supportsTablet": true,
       "teamId": "3LC3JLW6J5",
       "infoPlist": {

@@ -354,7 +354,7 @@
 				CODE_SIGN_ENTITLEMENTS = KDOC/KDOC.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 87;
+				CURRENT_PROJECT_VERSION = 88;
 				DEVELOPMENT_TEAM = 3LC3JLW6J5;
 				ENABLE_BITCODE = NO;
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -367,7 +367,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.5.6120;
+				MARKETING_VERSION = 1.5.6121;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -375,7 +375,7 @@
 				);
 				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_DEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = io.drmiracle.app;
-				PRODUCT_NAME = KDOC;
+				PRODUCT_NAME = "KDOC";
 				SWIFT_OBJC_BRIDGING_HEADER = "KDOC/KDOC-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -394,8 +394,8 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 87;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				CURRENT_PROJECT_VERSION = 88;
+				DEBUG_INFORMATION_FORMAT = dwarf-with-dsym;
 				DEVELOPMENT_TEAM = 3LC3JLW6J5;
 				INFOPLIST_FILE = KDOC/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
@@ -403,7 +403,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.5.6120;
+				MARKETING_VERSION = 1.5.6121;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -411,7 +411,7 @@
 				);
 				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_RELEASE";
 				PRODUCT_BUNDLE_IDENTIFIER = io.drmiracle.app;
-				PRODUCT_NAME = KDOC;
+				PRODUCT_NAME = "KDOC";
 				SWIFT_OBJC_BRIDGING_HEADER = "KDOC/KDOC-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -451,7 +451,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 87;
+				CURRENT_PROJECT_VERSION = 88;
 				DEVELOPMENT_TEAM = 3LC3JLW6J5;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
@@ -476,7 +476,7 @@
 					"$(inherited)",
 				);
 				LIBRARY_SEARCH_PATHS = "$(SDKROOT)/usr/lib/swift\"$(inherited)\"";
-				MARKETING_VERSION = 1.5.6120;
+				MARKETING_VERSION = 1.5.6121;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
@@ -519,8 +519,8 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 87;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				CURRENT_PROJECT_VERSION = 88;
+				DEBUG_INFORMATION_FORMAT = dwarf-with-dsym;
 				DEVELOPMENT_TEAM = 3LC3JLW6J5;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -538,7 +538,7 @@
 					"$(inherited)",
 				);
 				LIBRARY_SEARCH_PATHS = "$(SDKROOT)/usr/lib/swift\"$(inherited)\"";
-				MARKETING_VERSION = 1.5.6120;
+				MARKETING_VERSION = 1.5.6121;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
