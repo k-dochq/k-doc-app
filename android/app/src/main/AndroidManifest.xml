@@ -30,6 +30,12 @@
         <data android:scheme="kdoc"/>
         <data android:scheme="exp+k-doc-app"/>
       </intent-filter>
+      <intent-filter android:autoVerify="true">
+        <action android:name="android.intent.action.VIEW"/>
+        <category android:name="android.intent.category.DEFAULT"/>
+        <category android:name="android.intent.category.BROWSABLE"/>
+        <data android:scheme="https" android:host="k-doc.onelink.me"/>
+      </intent-filter>
     </activity>
   </application>
 </manifest>

@@ -2,7 +2,7 @@
   "expo": {
     "name": "K-DOC",
     "slug": "k-doc-app",
-    "version": "1.5.6121",
+    "version": "1.5.6128",
     "orientation": "portrait",
     "icon": "./assets/app-icon.png",
     "userInterfaceStyle": "light",
@@ -10,21 +10,21 @@
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "cover",
-      "backgroundColor": "#DA47EF"
+      "backgroundColor": "#7657FF"
     },
     "assetBundlePatterns": ["**/*"],
     "plugins": [
       [
         "expo-splash-screen",
         {
-          "backgroundColor": "#DA47EF",
+          "backgroundColor": "#7657FF",
           "image": "./assets/splash.png",
           "imageWidth": 200,
           "resizeMode": "contain",
           "android": {
             "image": "./assets/splash.png",
             "resizeMode": "contain",
-            "backgroundColor": "#DA47EF"
+            "backgroundColor": "#7657FF"
           }
         }
       ],
@@ -39,6 +39,7 @@
       "./plugins/withKeystoreConfig",
       "./plugins/withIOSVersion",
       "./plugins/withAndroidCleartextTraffic",
+      "./plugins/withAndroidAppLinks",
       "./plugins/withIOSTeam",
       "expo-asset",
       "expo-secure-store",
@@ -49,10 +50,13 @@
     "scheme": "kdoc",
     "ios": {
       "bundleIdentifier": "io.drmiracle.app",
-      "buildNumber": "88",
-      "version": "1.5.6121",
+      "buildNumber": "95",
+      "version": "1.5.6128",
       "supportsTablet": true,
       "teamId": "3LC3JLW6J5",
+      "associatedDomains": [
+        "applinks:k-doc.onelink.me"
+      ],
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false,
         "NSUserTrackingUsageDescription": "맞춤형 마케팅과 앱 성능 분석을 위해 기기 식별자를 사용합니다.",
@@ -61,8 +65,8 @@
     },
     "android": {
       "package": "io.drmiracle.app",
-      "versionCode": 79,
-      "versionName": "1.5.6120",
+      "versionCode": 86,
+      "versionName": "1.5.6128",
       "googleServicesFile": "./google-services.json",
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false,

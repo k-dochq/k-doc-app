@@ -31,14 +31,10 @@ export function useAppInitialization(
         const { status } = await requestTrackingPermissionsAsync();
         console.log("📋 ATT result:", status);
 
-        // 2단계: ATT 허용 시 AppsFlyer 초기화
-        if (status === PermissionStatus.GRANTED) {
-          console.log("✅ ATT granted, initializing AppsFlyer...");
-          await initAppsFlyer();
-          console.log("✅ AppsFlyer initialized");
-        } else {
-          console.log("❌ ATT not granted, skipping AppsFlyer");
-        }
+        // 2단계: ATT 결과 관계없이 AppsFlyer 초기화 (딥링크는 ATT 비허용 시에도 동작해야 함)
+        console.log(`📋 ATT status: ${status}, initializing AppsFlyer...`);
+        await initAppsFlyer();
+        console.log("✅ AppsFlyer initialized");
 
         // 3단계: 푸시 알림 권한 요청 (ATT 이후)
         console.log("🔔 Step 2: Requesting push notification permission...");

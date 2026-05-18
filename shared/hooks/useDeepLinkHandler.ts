@@ -4,6 +4,7 @@
  */
 
 import { useEffect } from "react";
+import { DeviceEventEmitter } from "react-native";
 import { WebView } from "react-native-webview";
 import {
   setupDeepLinkListener,
@@ -11,6 +12,8 @@ import {
   parseDeepLinkUrl,
 } from "../../features/social-login/lib/deep-link-utils";
 import { handleSocialLoginDeepLink } from "../../features/social-login/lib/social-login-deep-link-handler";
+import { APPSFLYER_DEEP_LINK_EVENT } from "../../libs/appsflyer";
+import { getWebViewBaseUrl } from "../lib/getWebViewBaseUrl";
 import type { DeepLinkParams } from "../types/webview-messages";
 
 interface UseDeepLinkHandlerProps {
@@ -96,6 +99,21 @@ export function useDeepLinkHandler({
       }
     });
 
-    return cleanup;
+    // AppsFlyer OneLink 딥링크 수신 (Universal Links / App Links / deferred)
+    const appsFlyerSubscription = DeviceEventEmitter.addListener(
+      APPSFLYER_DEEP_LINK_EVENT,
+      () => {
+        console.log("[useDeepLinkHandler] AppsFlyer 딥링크 수신 → 홈으로 이동");
+        const homeUrl = getWebViewBaseUrl();
+        webViewRef.current?.injectJavaScript(
+          `window.location.href = '${homeUrl}'; true;`
+        );
+      }
+    );
+
+    return () => {
+      cleanup();
+      appsFlyerSubscription.remove();
+    };
   }, [webViewRef, loginContext]);
 }
