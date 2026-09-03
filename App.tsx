@@ -14,6 +14,7 @@ import {
   useDeepLinkHandler,
 } from "./shared/hooks";
 import { getWebViewBaseUrl } from "./shared/lib/getWebViewBaseUrl";
+import { appendAppUtm } from "./shared/lib/appendAppUtm";
 import { useSocialLogin } from "./features/social-login";
 import {
   useSplashTimer,
@@ -60,7 +61,8 @@ function AppContent() {
   const webViewRef = React.useRef<WebView | null>(null);
 
   // 알림으로부터 초기 URL 결정
-  const initialUrl = useInitialUrlFromNotification(getWebViewBaseUrl());
+  // 최초 로드 URL(푸시 딥링크로 열린 경우 포함)에 앱 유입 UTM 을 붙인다
+  const initialUrl = appendAppUtm(useInitialUrlFromNotification(getWebViewBaseUrl()));
 
   // 스낵바 상태 관리
   const {
