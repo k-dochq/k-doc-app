@@ -32,7 +32,7 @@
         "expo-build-properties",
         {
           "android": {
-            "targetSdkVersion": 35
+            "compileSdkVersion": 36, "targetSdkVersion": 36
           }
         }
       ],
@@ -65,7 +65,7 @@
     },
     "android": {
       "package": "io.drmiracle.app",
-      "versionCode": 86,
+      "versionCode": 87,
       "versionName": "1.5.6129",
       "googleServicesFile": "./google-services.json",
       "edgeToEdgeEnabled": true,
